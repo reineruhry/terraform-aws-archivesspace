@@ -1,1 +1,1 @@
-# ArchivesSpace Terraform modules
+# ArchivesSpace Terraform module
