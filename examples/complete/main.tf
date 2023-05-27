@@ -68,6 +68,7 @@ locals {
 module "archivesspace" {
   source = "../.."
 
+  app_efs_id         = module.efs.id
   app_img            = var.archivesspace_img
   certbot_alb_name   = local.name
   certbot_email      = "mark.cooper@lyrasis.org"
@@ -77,7 +78,6 @@ module "archivesspace" {
   db_name            = "archivesspace"
   db_password_param  = aws_ssm_parameter.db_password.name
   db_username_param  = aws_ssm_parameter.db_username.name
-  efs_id             = module.efs.id
   http_listener_arn  = module.alb.http_tcp_listener_arns[0]
   https_listener_arn = module.alb.https_listener_arns[0]
   listener_priority  = 1
@@ -85,6 +85,7 @@ module "archivesspace" {
   name               = "ex-complete"
   public_hostname    = "${local.name}.${var.domain}"
   security_group_id  = module.archivesspace_sg.security_group_id
+  solr_efs_id        = module.efs.id
   solr_img           = var.solr_img
   staff_hostname     = "${local.name}.${var.domain}"
   staff_prefix       = "/staff/"

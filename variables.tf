@@ -8,6 +8,10 @@ data "aws_ssm_parameter" "db_username" {
   name = var.db_username_param
 }
 
+variable "app_efs_id" {
+  description = "EFS id for ArchivesSpace data directory"
+}
+
 variable "app_img" {
   description = "ArchivesSpace img tag"
 }
@@ -67,10 +71,6 @@ variable "db_username_param" {
   description = "DSpace db username SSM parameter name"
 }
 
-variable "efs_id" {
-  description = "EFS id"
-}
-
 variable "http_listener_arn" {
   description = "ALB (http) listener arn"
 }
@@ -124,6 +124,10 @@ variable "requires_compatibilities" {
 
 variable "security_group_id" {
   description = "Security group id"
+}
+
+variable "solr_efs_id" {
+  description = "EFS id for Solr data"
 }
 
 variable "solr_img" {

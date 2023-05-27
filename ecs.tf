@@ -4,6 +4,7 @@ locals {
   listener_priority = var.listener_priority * 10 # create gaps in sequence for targets
   public_url        = "https://${var.public_hostname}${var.public_prefix}"
   solr_url          = "http://${var.capacity_provider == "FARGATE" ? "localhost" : "solr"}:8983/solr/archivesspace"
+  solr_volume       = "${var.name}-solr"
   staff_url         = "https://${var.staff_hostname}${var.staff_prefix}"
 
   targets = {
@@ -55,7 +56,7 @@ resource "aws_ecs_task_definition" "this" {
   #   name = local.data_volume
 
   #   efs_volume_configuration {
-  #     file_system_id     = var.efs_id
+  #     file_system_id     = var.app_efs_id
   #     transit_encryption = "ENABLED"
 
   #     authorization_config {
@@ -101,13 +102,26 @@ resource "aws_ecs_service" "this" {
 }
 
 resource "aws_efs_access_point" "data" {
-  file_system_id = var.efs_id
+  file_system_id = var.app_efs_id
 
   root_directory {
     path = "/${local.data_volume}"
     creation_info {
       owner_gid   = 1000
       owner_uid   = 1000
+      permissions = "755"
+    }
+  }
+}
+
+resource "aws_efs_access_point" "solr" {
+  file_system_id = var.solr_efs_id
+
+  root_directory {
+    path = "/${local.solr_volume}"
+    creation_info {
+      owner_gid   = 8983
+      owner_uid   = 8983
       permissions = "755"
     }
   }
