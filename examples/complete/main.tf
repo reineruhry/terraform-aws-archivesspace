@@ -65,26 +65,33 @@ locals {
 # ArchivesSpace resources
 ################################################################################
 
-# module "archivesspace" {
-#   source = "../.."
+module "archivesspace" {
+  source = "../.."
 
-#   app_img              = var.archivesspace_img
-#   cluster_id           = module.ecs.cluster_id
-#   db_host              = module.db.db_instance_address
-#   db_name              = "archivesspace"
-#   db_password_arn      = aws_ssm_parameter.db_password.arn
-#   db_username_arn      = aws_ssm_parameter.db_username.arn
-#   efs_id               = module.efs.id
-#   http_listener_arn    = module.alb.http_listener_arns[0]
-#   https_listener_arn   = module.alb.https_listener_arns[0]
-#   listener_priority    = 1
-#   log_group            = "/aws/ecs/${local.name}"
-#   name                 = "${local.name}-solr"
-#   security_group_id    = module.archivesspace_sg.security_group_id
-#   solr_img             = var.solr_img
-#   subnets              = module.vpc.private_subnets
-#   vpc_id               = module.vpc.vpc_id
-# }
+  app_img            = var.archivesspace_img
+  certbot_alb_name   = local.name
+  certbot_email      = "mark.cooper@lyrasis.org"
+  certbot_enabled    = true
+  cluster_id         = module.ecs.cluster_id
+  db_host            = module.db.db_instance_address
+  db_name            = "archivesspace"
+  db_password_param  = aws_ssm_parameter.db_password.name
+  db_username_param  = aws_ssm_parameter.db_username.name
+  efs_id             = module.efs.id
+  http_listener_arn  = module.alb.http_tcp_listener_arns[0]
+  https_listener_arn = module.alb.https_listener_arns[0]
+  listener_priority  = 1
+  log_group          = "/aws/ecs/${local.name}"
+  name               = "ex-complete"
+  public_hostname    = "${local.name}.${var.domain}"
+  security_group_id  = module.archivesspace_sg.security_group_id
+  solr_img           = var.solr_img
+  staff_hostname     = "${local.name}.${var.domain}"
+  staff_prefix       = "/staff/"
+  subnets            = module.vpc.private_subnets
+  timezone           = "America/New_York"
+  vpc_id             = module.vpc.vpc_id
+}
 
 ################################################################################
 # Supporting resources
@@ -156,6 +163,13 @@ module "archivesspace_sg" {
   vpc_id      = module.vpc.vpc_id
 
   ingress_with_cidr_blocks = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      description = "EFS access from within VPC"
+      cidr_blocks = module.vpc.vpc_cidr_block
+    },
     {
       from_port   = 2049
       to_port     = 2049
