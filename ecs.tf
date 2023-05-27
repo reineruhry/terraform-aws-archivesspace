@@ -1,9 +1,10 @@
 locals {
-  data_volume = "${var.name}-data"
-  hostnames   = toset([var.public_hostname, var.staff_hostname])
-  public_url  = "https://${var.public_hostname}${var.public_prefix}"
-  solr_url    = "http://${var.capacity_provider == "FARGATE" ? "localhost" : "solr"}:8983/solr/archivesspace"
-  staff_url   = "https://${var.staff_hostname}${var.staff_prefix}"
+  data_volume       = "${var.name}-data"
+  hostnames         = toset([var.public_hostname, var.staff_hostname])
+  listener_priority = var.listener_priority * 10 # create gaps in sequence for targets
+  public_url        = "https://${var.public_hostname}${var.public_prefix}"
+  solr_url          = "http://${var.capacity_provider == "FARGATE" ? "localhost" : "solr"}:8983/solr/archivesspace"
+  staff_url         = "https://${var.staff_hostname}${var.staff_prefix}"
 
   targets = {
     certbot = {
@@ -12,12 +13,13 @@ locals {
       health   = "/health"
       paths    = ["*"]
       port     = 80
-      priority = var.listener_priority
+      priority = local.listener_priority
     }
   }
 
   task_config = {
     app_img            = var.app_img
+    app_memory         = var.memory - var.solr_memory
     certbot_alb_name   = var.certbot_alb_name
     certbot_domains    = join(",", tolist(local.hostnames))
     certbot_email      = var.certbot_email
@@ -32,6 +34,7 @@ locals {
     network_mode       = var.network_mode
     region             = data.aws_region.current.name
     solr_img           = var.solr_img
+    solr_memory        = var.solr_memory
     solr_url           = local.solr_url
     timezone           = var.timezone
   }
@@ -41,7 +44,7 @@ resource "aws_ecs_task_definition" "this" {
   family                   = var.name
   network_mode             = var.network_mode
   requires_compatibilities = var.requires_compatibilities
-  cpu                      = var.cpu
+  cpu                      = var.capacity_provider == "FARGATE" ? var.cpu : null
   memory                   = var.memory
   execution_role_arn       = aws_iam_role.this.arn
   task_role_arn            = aws_iam_role.this.arn

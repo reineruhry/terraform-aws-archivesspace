@@ -37,7 +37,8 @@ variable "cluster_id" {
 }
 
 variable "cpu" {
-  default = 1024
+  default     = 1024
+  description = "Task level CPU allocation (applies only when using Fargate)"
 }
 
 variable "custom_env_cfg" {
@@ -96,7 +97,8 @@ variable "log_group" {
 }
 
 variable "memory" {
-  default = 2048
+  default     = 3072
+  description = "Task level memory allocation"
 }
 
 variable "name" {
@@ -126,6 +128,11 @@ variable "security_group_id" {
 
 variable "solr_img" {
   description = "Solr img tag"
+}
+
+variable "solr_memory" {
+  default     = 1024
+  description = "Memory allocation for Solr"
 }
 
 variable "staff_hostname" {
