@@ -118,7 +118,7 @@ variable "public_prefix" {
   description = "Path prefix for ArchivesSpace public interface"
 
   validation {
-    condition     = endswith(var.public_prefix, "/")
+    condition     = startswith(var.public_prefix, "/") && endswith(var.public_prefix, "/")
     error_message = "Prefix must end with a slash (/)"
   }
 }
@@ -153,7 +153,7 @@ variable "staff_prefix" {
   description = "Path prefix for ArchivesSpace staff interface"
 
   validation {
-    condition     = endswith(var.staff_prefix, "/")
+    condition     = startswith(var.staff_prefix, "/") && endswith(var.staff_prefix, "/")
     error_message = "Prefix must end with a slash (/)"
   }
 }
