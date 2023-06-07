@@ -48,5 +48,14 @@ locals {
       port      = 80
       priority  = local.listener_priority
     }
+    # proxy = {
+    #   container = "proxy"
+    #   arn       = var.https_listener_arn
+    #   hosts     = local.hostnames
+    #   health    = "${staff_prefix}/api/version"
+    #   paths     = ["*"]
+    #   port      = 80
+    #   priority  = local.listener_priority + 1
+    # }
   }
 }
