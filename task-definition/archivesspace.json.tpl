@@ -35,5 +35,32 @@
         "awslogs-stream-prefix": "${name}"
       }
     }
+  },
+  {
+    "name": "solr",
+    "image": "${solr_img}",
+    "networkMode": "${network_mode}",
+    "essential": true,
+    "command": ["solr-create", "-p", "8983", "-c", "archivesspace", "-d", "archivesspace"],
+    "environment": [
+      {
+        "name": "SOLR_JAVA_MEM",
+        "value": "-Xms${solr_memory}m -Xmx${solr_memory}m"
+      }
+    ],
+    "mountPoints": [
+      {
+        "sourceVolume": "${solr_data}",
+        "containerPath": "/var/solr"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    }
   }
 ]

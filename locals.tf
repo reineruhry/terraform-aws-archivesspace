@@ -35,6 +35,7 @@ locals {
     name               = var.name
     network_mode       = var.network_mode
     region             = data.aws_region.current.name
+    solr_data          = local.solr_volume
     solr_img           = var.solr_img
     solr_memory        = var.solr_memory
     solr_url           = local.solr_url

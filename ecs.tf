@@ -21,6 +21,19 @@ resource "aws_ecs_task_definition" "this" {
   #     }
   #   }
   # }
+
+  volume {
+    name = local.solr_volume
+
+    efs_volume_configuration {
+      file_system_id     = var.solr_efs_id
+      transit_encryption = "ENABLED"
+
+      authorization_config {
+        access_point_id = aws_efs_access_point.solr.id
+      }
+    }
+  }
 }
 
 resource "aws_ecs_service" "this" {
