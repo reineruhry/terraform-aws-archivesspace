@@ -114,8 +114,8 @@ variable "public_hostname" {
 }
 
 variable "public_prefix" {
-  description = "Path prefix for ArchivesSpace public interface"
   default     = ""
+  description = "Path prefix for ArchivesSpace public interface"
 }
 
 variable "requires_compatibilities" {
@@ -144,8 +144,8 @@ variable "staff_hostname" {
 }
 
 variable "staff_prefix" {
-  description = "Path prefix for ArchivesSpace staff interface"
   default     = ""
+  description = "Path prefix for ArchivesSpace staff interface"
 }
 
 variable "subnets" {

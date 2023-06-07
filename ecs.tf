@@ -27,8 +27,7 @@ locals {
     certbot_enabled    = var.certbot_enabled ? "true" : "false"
     custom_env_cfg     = var.custom_env_cfg
     custom_secrets_cfg = var.custom_secrets_cfg
-    # TODO convert this into a param
-    db_url             = "jdbc:mysql://${var.db_host}:3306/${var.db_name}?useUnicode=true&characterEncoding=UTF-8&user=${data.aws_ssm_parameter.db_username.value}&password=${data.aws_ssm_parameter.db_password.value}&useSSL=false&allowPublicKeyRetrieval=true"
+    db_url             = aws_ssm_parameter.db-url.arn
     initialize_plugins = var.initialize_plugins
     log_group          = var.log_group
     name               = var.name
@@ -125,4 +124,10 @@ resource "aws_efs_access_point" "solr" {
       permissions = "755"
     }
   }
+}
+
+resource "aws_ssm_parameter" "db-url" {
+  name  = "${var.name}-db-url"
+  type  = "SecureString"
+  value = "jdbc:mysql://${var.db_host}:3306/${var.db_name}?useUnicode=true&characterEncoding=UTF-8&user=${data.aws_ssm_parameter.db_username.value}&password=${data.aws_ssm_parameter.db_password.value}&useSSL=false&allowPublicKeyRetrieval=true"
 }
