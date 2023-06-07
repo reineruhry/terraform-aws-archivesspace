@@ -56,19 +56,19 @@ variable "custom_secrets_cfg" {
 }
 
 variable "db_host" {
-  description = "DSpace db host"
+  description = "ArchivesSpace db host"
 }
 
 variable "db_name" {
-  description = "DSpace db name"
+  description = "ArchivesSpace db name"
 }
 
 variable "db_password_param" {
-  description = "DSpace db password SSM parameter name"
+  description = "ArchivesSpace db password SSM parameter name"
 }
 
 variable "db_username_param" {
-  description = "DSpace db username SSM parameter name"
+  description = "ArchivesSpace db username SSM parameter name"
 }
 
 variable "http_listener_arn" {

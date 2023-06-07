@@ -37,6 +37,37 @@
     }
   },
   {
+    "name"  : "createdb",
+    "image" : "mysql:8",
+    "networkMode": "${network_mode}",
+    "essential": false,
+    "command" : [
+      "/bin/sh",
+      "-c",
+      "mysql --user ${db_user} -e \"CREATE DATABASE IF NOT EXISTS ${db_name} default character set utf8mb4;\""
+    ],
+    "environment": [
+      {
+        "name" : "MYSQL_HOST",
+        "value" : "${db_host}"
+      }
+    ],
+    "secrets": [
+      {
+        "name" : "MYSQL_PWD",
+        "valueFrom" : "${db_password_arn}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    }
+  },
+  {
     "name": "solr",
     "image": "${solr_img}",
     "networkMode": "${network_mode}",

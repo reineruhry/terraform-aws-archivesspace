@@ -102,5 +102,5 @@ resource "aws_efs_access_point" "solr" {
 resource "aws_ssm_parameter" "db-url" {
   name  = "${var.name}-db-url"
   type  = "SecureString"
-  value = "jdbc:mysql://${var.db_host}:3306/${var.db_name}?useUnicode=true&characterEncoding=UTF-8&user=${data.aws_ssm_parameter.db_username.value}&password=${data.aws_ssm_parameter.db_password.value}&useSSL=false&allowPublicKeyRetrieval=true"
+  value = local.db_url
 }
