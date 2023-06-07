@@ -10,12 +10,13 @@ locals {
   # setup routes for load balancer
   targets = {
     certbot = {
-      arn      = var.http_listener_arn
-      hosts    = local.hostnames
-      health   = "/health"
-      paths    = ["*"]
-      port     = 80
-      priority = local.listener_priority
+      container = "certbot"
+      arn       = var.http_listener_arn
+      hosts     = local.hostnames
+      health    = "/health"
+      paths     = ["*"]
+      port      = 80
+      priority  = local.listener_priority
     }
   }
 
