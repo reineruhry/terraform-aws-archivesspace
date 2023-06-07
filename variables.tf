@@ -152,6 +152,12 @@ variable "subnets" {
   description = "Subnets"
 }
 
+variable "tags" {
+  description = "Tags for the ArchivesSpace ECS service"
+  default     = {}
+  type        = map(string)
+}
+
 variable "target_type" {
   default = "ip"
 }
