@@ -100,7 +100,7 @@ module "archivesspace" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -110,12 +110,15 @@ module "vpc" {
   private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 3)]
   database_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 6)]
 
-  create_database_subnet_group = true
-  enable_dns_hostnames         = true
-  enable_dns_support           = true
-  enable_nat_gateway           = true
-  map_public_ip_on_launch      = false
-  single_nat_gateway           = true
+  create_database_subnet_group  = true
+  enable_dns_hostnames          = true
+  enable_dns_support            = true
+  enable_nat_gateway            = true
+  map_public_ip_on_launch       = false
+  manage_default_network_acl    = false
+  manage_default_route_table    = false
+  manage_default_security_group = false
+  single_nat_gateway            = true
 
   tags = local.tags
 }
