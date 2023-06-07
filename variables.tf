@@ -114,8 +114,13 @@ variable "public_hostname" {
 }
 
 variable "public_prefix" {
-  default     = ""
+  default     = "/"
   description = "Path prefix for ArchivesSpace public interface"
+
+  validation {
+    condition     = endswith(var.public_prefix, "/")
+    error_message = "Prefix must end with a slash (/)"
+  }
 }
 
 variable "requires_compatibilities" {
@@ -144,8 +149,13 @@ variable "staff_hostname" {
 }
 
 variable "staff_prefix" {
-  default     = ""
+  default     = "/"
   description = "Path prefix for ArchivesSpace staff interface"
+
+  validation {
+    condition     = endswith(var.staff_prefix, "/")
+    error_message = "Prefix must end with a slash (/)"
+  }
 }
 
 variable "subnets" {

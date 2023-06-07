@@ -52,7 +52,7 @@ locals {
     #   container = "proxy"
     #   arn       = var.https_listener_arn
     #   hosts     = local.hostnames
-    #   health    = "${staff_prefix}/api/version"
+    #   health    = "${staff_prefix}api/version"
     #   paths     = ["*"]
     #   port      = 80
     #   priority  = local.listener_priority + 1
