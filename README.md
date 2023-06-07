@@ -5,6 +5,7 @@ task definition:
 
 - Nginx for http to https redirects and certbot (optional for SSL certs)
 - MySQL cli for creating the database
+- Nginx proxy for routing to ArchivesSpace endpoints
 - ArchivesSpace with EFS for persistence (`/archivesspace/data`)
 - Solr with EFS for persistence (`/var/solr`)
 
@@ -50,10 +51,7 @@ assigning priorities to routes. Given `listener_priority = 1`:
 
 ```txt
 certbot (* 10 + 0) = 10 (http listener)
-api:    (* 10 + 1) = 11 (https listener)
-oai:    (* 10 + 2) = 12 (https listener)
-staff:  (* 10 + 3) = 13 (https listener)
-public: (* 10 + 4) = 14 (https listener)
+proxy:  (* 10 + 1) = 11 (https listener)
 ```
 
 This ensures that a single, unique `listener_priority` per instance

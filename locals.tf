@@ -9,6 +9,7 @@ locals {
   staff_url         = "https://${var.staff_hostname}${var.staff_prefix}"
 
   task_config = {
+    app_data           = local.data_volume
     app_img            = var.app_img
     app_memory         = var.memory - var.solr_memory
     certbot_alb_name   = var.certbot_alb_name
@@ -26,11 +27,13 @@ locals {
     log_group          = var.log_group
     name               = var.name
     network_mode       = var.network_mode
+    public_url         = local.public_url
     region             = data.aws_region.current.name
     solr_data          = local.solr_volume
     solr_img           = var.solr_img
     solr_memory        = var.solr_memory
     solr_url           = local.solr_url
+    staff_url          = local.staff_url
     timezone           = var.timezone
   }
 

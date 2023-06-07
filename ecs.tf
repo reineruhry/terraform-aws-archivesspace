@@ -9,18 +9,18 @@ resource "aws_ecs_task_definition" "this" {
 
   container_definitions = templatefile("${path.module}/task-definition/archivesspace.json.tpl", local.task_config)
 
-  # volume {
-  #   name = local.data_volume
+  volume {
+    name = local.data_volume
 
-  #   efs_volume_configuration {
-  #     file_system_id     = var.app_efs_id
-  #     transit_encryption = "ENABLED"
+    efs_volume_configuration {
+      file_system_id     = var.app_efs_id
+      transit_encryption = "ENABLED"
 
-  #     authorization_config {
-  #       access_point_id = aws_efs_access_point.data.id
-  #     }
-  #   }
-  # }
+      authorization_config {
+        access_point_id = aws_efs_access_point.data.id
+      }
+    }
+  }
 
   volume {
     name = local.solr_volume

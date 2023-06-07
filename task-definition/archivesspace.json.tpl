@@ -68,6 +68,72 @@
     }
   },
   {
+    "name": "app",
+    "image": "${app_img}",
+    "networkMode": "${network_mode}",
+    "essential": true,
+    "environment": [
+      {
+        "name": "APPCONFIG_FRONTEND_PROXY_URL",
+        "value": "${staff_url}"
+      },
+      {
+        "name": "APPCONFIG_PUBLIC_PROXY_URL",
+        "value": "${public_url}"
+      },
+      {
+        "name": "APPCONFIG_OAI_PROXY_URL",
+        "value": "${public_url}"
+      },
+      {
+        "name": "APPCONFIG_SOLR_URL",
+        "value": "${solr_url}"
+      },
+      {
+        "name": "ASPACE_INITIALIZE_PLUGINS",
+        "value": "${initialize_plugins}"
+      },
+      {
+        "name": "ASPACE_JAVA_XMX",
+        "value": "-Xmx${app_memory}m"
+      },
+      {
+        "name": "TZ",
+        "value": "${timezone}"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "APPCONFIG_DB_URL",
+        "valueFrom": "${db_url}"
+      }
+    ],
+    "mountPoints": [
+      {
+        "sourceVolume": "${app_data}",
+        "containerPath": "/archivesspace/data"
+      }
+    ],
+    "dependsOn": [
+      {
+        "containerName": "createdb",
+        "condition": "COMPLETE"
+      },
+      {
+        "containerName": "solr",
+        "condition": "START"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    }
+  },
+  {
     "name": "solr",
     "image": "${solr_img}",
     "networkMode": "${network_mode}",
