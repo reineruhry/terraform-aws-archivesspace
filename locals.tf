@@ -6,7 +6,7 @@ locals {
   hostnames         = toset([var.public_hostname, var.staff_hostname])
   listener_priority = var.listener_priority * 10 # create gaps in sequence for targets
   oai_prefix        = var.public_prefix != "/" ? "${var.public_prefix}oai" : "/oai"
-  proxy_port        = 8000
+  proxy_port        = 4000
   proxy_type        = var.public_hostname == var.staff_hostname ? "single" : "multi"
   public_url        = "https://${var.public_hostname}${var.public_prefix}"
   solr_url          = "http://${var.network_mode == "awsvpc" ? "localhost" : "solr"}:8983/solr/archivesspace"

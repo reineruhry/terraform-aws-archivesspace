@@ -189,8 +189,8 @@ module "archivesspace_sg" {
       cidr_blocks = module.vpc.vpc_cidr_block
     },
     {
-      from_port   = 8000
-      to_port     = 8000
+      from_port   = 4000
+      to_port     = 4000
       protocol    = "tcp"
       description = "ArchivesSpace proxy access from within VPC"
       cidr_blocks = module.vpc.vpc_cidr_block
