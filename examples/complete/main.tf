@@ -71,7 +71,7 @@ module "archivesspace" {
   app_efs_id         = module.efs.id
   app_img            = var.archivesspace_img
   certbot_alb_name   = local.name
-  certbot_email      = "mark.cooper@lyrasis.org"
+  certbot_email      = "notifications@${var.domain}"
   certbot_enabled    = true
   cluster_id         = module.ecs.cluster_id
   db_host            = module.db.db_instance_address
