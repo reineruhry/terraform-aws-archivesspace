@@ -1,0 +1,38 @@
+upstream app_api {
+  server ${UPSTREAM_HOST}:8089;
+}
+
+upstream app_oai {
+  server ${UPSTREAM_HOST}:8082;
+}
+
+upstream app_public {
+  server ${UPSTREAM_HOST}:8081;
+}
+
+upstream app_staff {
+  server ${UPSTREAM_HOST}:8080;
+}
+
+server {
+  server_name _;
+  # ${PUBLIC_NAME} ${STAFF_NAME}
+
+  include /etc/nginx/common-config;
+
+  location ${PUBLIC_PREFIX} {
+    proxy_pass http://app_public;
+  }
+
+  location ${OAI_PREFIX} {
+    proxy_pass http://app_oai/;
+  }
+
+  location ${STAFF_PREFIX} {
+    proxy_pass http://app_staff;
+  }
+
+  location ${API_PREFIX} {
+    proxy_pass http://app_api/;
+  }
+}

@@ -24,7 +24,7 @@
     ],
     "portMappings": [
       {
-        "containerPort": 80
+        "containerPort": ${certbot_port}
       }
     ],
     "logConfiguration": {
@@ -56,6 +56,65 @@
       {
         "name" : "MYSQL_PWD",
         "valueFrom" : "${db_password_arn}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    }
+  },
+  {
+    "name": "proxy",
+    "image": "lyrasis/aspace-proxy:latest",
+    "networkMode": "${network_mode}",
+    "essential": true,
+    "environment": [
+      {
+        "name": "API_PREFIX",
+        "value": "${api_prefix}"
+      },
+      {
+        "name": "OAI_PREFIX",
+        "value": "${oai_prefix}"
+      },
+      {
+        "name": "PROXY_TYPE",
+        "value": "${proxy_type}"
+      },
+      {
+        "name": "PUBLIC_NAME",
+        "value": "${public_hostname}"
+      },
+      {
+        "name": "PUBLIC_PREFIX",
+        "value": "${public_prefix}"
+      },
+      {
+        "name": "STAFF_NAME",
+        "value": "${staff_hostname}"
+      },
+      {
+        "name": "STAFF_PREFIX",
+        "value": "${staff_prefix}"
+      },
+      {
+        "name": "UPSTREAM_HOST",
+        "value": "${upstream_host}"
+      }
+    ],
+    "portMappings": [
+      {
+        "containerPort": ${proxy_port}
+      }
+    ],
+    "dependsOn": [
+      {
+        "containerName": "app",
+        "condition": "START"
       }
     ],
     "logConfiguration": {

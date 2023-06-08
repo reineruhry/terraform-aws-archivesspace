@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  aspace-proxy:
+    build:
+      context: .
+    environment:
+      API_PREFIX: "/api/"
+      OAI_PREFIX: "/oai"
+      PROXY_TYPE: "single"
+      PUBLIC_NAME: "archivesspace-ex-complete.lyrtech.org"
+      PUBLIC_PREFIX: "/"
+      STAFF_NAME: "archivesspace-ex-complete.lyrtech.org"
+      STAFF_PREFIX: "/staff/"
+      UPSTREAM_HOST: ${UPSTREAM_HOST:-localhost}
+    network_mode: host
