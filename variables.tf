@@ -92,10 +92,6 @@ variable "listener_priority" {
   description = "ALB listener priority (actual value is: int * 10)"
 }
 
-variable "log_group" {
-  description = "AWS CloudWatch log group name"
-}
-
 variable "memory" {
   default     = 3072
   description = "Task level memory allocation"

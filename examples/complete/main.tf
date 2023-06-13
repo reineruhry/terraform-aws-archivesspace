@@ -81,7 +81,6 @@ module "archivesspace" {
   http_listener_arn  = module.alb.http_tcp_listener_arns[0]
   https_listener_arn = module.alb.https_listener_arns[0]
   listener_priority  = 1
-  log_group          = "/aws/ecs/${local.name}"
   name               = "ex-complete"
   public_hostname    = "${local.name}.${var.domain}"
   security_group_id  = module.archivesspace_sg.security_group_id
@@ -360,15 +359,6 @@ module "ecs" {
 
   cluster_name = local.name
 
-  cluster_configuration = {
-    execute_command_configuration = {
-      logging = "OVERRIDE"
-      log_configuration = {
-        cloud_watch_log_group_name = aws_cloudwatch_log_group.this.name
-      }
-    }
-  }
-
   # Capacity provider
   fargate_capacity_providers = {
     FARGATE = {
@@ -440,13 +430,6 @@ module "db" {
       value = "1"
     }
   ]
-
-  tags = local.tags
-}
-
-resource "aws_cloudwatch_log_group" "this" {
-  name              = "/aws/ecs/${local.name}"
-  retention_in_days = 7
 
   tags = local.tags
 }

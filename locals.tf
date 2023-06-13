@@ -33,7 +33,7 @@ locals {
     db_url             = aws_ssm_parameter.db-url.arn
     db_user            = data.aws_ssm_parameter.db_username.value
     initialize_plugins = var.initialize_plugins
-    log_group          = var.log_group
+    log_group          = aws_cloudwatch_log_group.this.name
     name               = var.name
     network_mode       = var.network_mode
     oai_prefix         = local.oai_prefix

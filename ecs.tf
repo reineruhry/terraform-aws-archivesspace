@@ -104,3 +104,8 @@ resource "aws_ssm_parameter" "db-url" {
   type  = "SecureString"
   value = local.db_url
 }
+
+resource "aws_cloudwatch_log_group" "this" {
+  name              = "/aws/ecs/${var.name}"
+  retention_in_days = 7
+}
