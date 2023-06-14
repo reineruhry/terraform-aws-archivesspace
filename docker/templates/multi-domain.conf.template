@@ -15,7 +15,7 @@ upstream app_staff {
 }
 
 server {
-  server_name _;
+  server_name ${PUBLIC_NAME};
   include /etc/nginx/common-config;
 
   location ${PUBLIC_PREFIX} {
@@ -25,6 +25,11 @@ server {
   location ${OAI_PREFIX} {
     proxy_pass http://app_oai/;
   }
+}
+
+server {
+  server_name ${STAFF_NAME};
+  include /etc/nginx/common-config;
 
   location ${STAFF_PREFIX} {
     proxy_pass http://app_staff;

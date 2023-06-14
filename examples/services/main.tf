@@ -41,13 +41,13 @@ module "archivesspace" {
   https_listener_arn = data.aws_lb_listener.https.arn
   listener_priority  = 1
   name               = "ex-service"
-  public_hostname    = "${local.name}.${var.domain}"
+  public_hostname    = "${local.name}-pui.${var.domain}"
   public_prefix      = "/"
   security_group_id  = data.aws_security_group.selected.id
   solr_efs_id        = data.aws_efs_file_system.selected.id
   solr_img           = var.solr_img
-  staff_hostname     = "${local.name}.${var.domain}"
-  staff_prefix       = "/staff/"
+  staff_hostname     = "${local.name}-sui.${var.domain}"
+  staff_prefix       = "/"
   subnets            = data.aws_subnets.selected.ids
   timezone           = "America/New_York"
   vpc_id             = data.aws_vpc.selected.id
@@ -57,11 +57,25 @@ module "archivesspace" {
 # Supporting resources
 ################################################################################
 
-resource "aws_route53_record" "this" {
+resource "aws_route53_record" "pui" {
   provider = aws.dns
 
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = "${local.name}.${var.domain}"
+  name    = "${local.name}-pui.${var.domain}"
+  type    = "A"
+
+  alias {
+    name                   = data.aws_lb.selected.dns_name
+    zone_id                = data.aws_lb.selected.zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "sui" {
+  provider = aws.dns
+
+  zone_id = data.aws_route53_zone.selected.zone_id
+  name    = "${local.name}-sui.${var.domain}"
   type    = "A"
 
   alias {
