@@ -1,5 +1,6 @@
 #!/bin/bash
 # ./examples/ops/connect.sh archivesspace-ex-complete ex-complete certbot archivesspaceprogramteam
+# ./examples/ops/connect.sh aspace-dcsp-production ex-service certbot archivesspaceprogramteam
 
 CLUSTER=$1
 SERVICE=$2
