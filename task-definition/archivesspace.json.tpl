@@ -32,7 +32,7 @@
       "options": {
         "awslogs-group": "${log_group}",
         "awslogs-region": "${region}",
-        "awslogs-stream-prefix": "certbot"
+        "awslogs-stream-prefix": "archivesspace"
       }
     }
   },
@@ -63,7 +63,7 @@
       "options": {
         "awslogs-group": "${log_group}",
         "awslogs-region": "${region}",
-        "awslogs-stream-prefix": "createdb"
+        "awslogs-stream-prefix": "archivesspace"
       }
     }
   },
@@ -122,7 +122,7 @@
       "options": {
         "awslogs-group": "${log_group}",
         "awslogs-region": "${region}",
-        "awslogs-stream-prefix": "proxy"
+        "awslogs-stream-prefix": "archivesspace"
       }
     }
   },
@@ -215,7 +215,7 @@
       "options": {
         "awslogs-group": "${log_group}",
         "awslogs-region": "${region}",
-        "awslogs-stream-prefix": "solr"
+        "awslogs-stream-prefix": "archivesspace"
       }
     }
   }
