@@ -1,7 +1,7 @@
 # ArchivesSpace
 
 Configuration in this directory creates an ArchivesSpace deployment
-using pre-existing dependencies (vpc, db, alb etc.).
+using pre-existing service dependencies (vpc, db, alb etc.).
 
 ## Usage
 
