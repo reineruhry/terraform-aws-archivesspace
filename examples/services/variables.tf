@@ -6,14 +6,6 @@ variable "domain" {
   default = "archivesspace.org"
 }
 
-variable "profile" {
-  default = "default"
-}
-
-variable "profile_for_dns" {
-  default = "default"
-}
-
 variable "solr_img" {
   default = "archivesspace/solr:3.3.1"
 }
@@ -28,6 +20,14 @@ data "aws_route53_zone" "selected" {
 ################################################################################
 # External resources
 ################################################################################
+variable "department" {}
+variable "dns_account_id" {}
+variable "environment" {}
+variable "project_account_id" {}
+variable "region" {}
+variable "role" {}
+variable "service" {}
+### module
 variable "cluster_name" {}
 variable "db_host" {}
 variable "db_name" {}
