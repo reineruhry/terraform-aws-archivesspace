@@ -72,13 +72,10 @@ cpu = 1024 # 1 v/cpu default
 
 #### Memory
 
-There is an allocation for the task and a specific allocation
-for Solr:
-
 ```hcl
-memory      = 3072 # max allocated memory at the task level
+app_memory  = 2048 # specific allocation to the aspace container
 solr_memory = 1024 # specific allocation to the solr container
 ```
 
-The `ASPACE_JAVA_XMX` envvar is set to `memory - solr_memory`,
-so `2048` by default.
+The task definition memory is set to (app_memory + solr_memory). When
+running on Fargate this needs to equal a [compatible value](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html).

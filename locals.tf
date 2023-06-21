@@ -5,6 +5,7 @@ locals {
   db_url            = "jdbc:mysql://${var.db_host}:3306/${var.db_name}?useUnicode=true&characterEncoding=UTF-8&user=${data.aws_ssm_parameter.db_username.value}&password=${data.aws_ssm_parameter.db_password.value}&useSSL=false&allowPublicKeyRetrieval=true"
   hostnames         = toset([var.public_hostname, var.staff_hostname])
   listener_priority = var.listener_priority * 10 # create gaps in sequence for targets
+  memory            = var.app_memory + var.solr_memory
   oai_prefix        = var.public_prefix != "/" ? "${var.public_prefix}oai" : "/oai"
   proxy_port        = 4000
   proxy_type        = var.public_hostname == var.staff_hostname ? "single" : "multi"
@@ -19,7 +20,7 @@ locals {
     api_prefix         = local.api_prefix
     app_data           = local.data_volume
     app_img            = var.app_img
-    app_memory         = var.memory - var.solr_memory
+    app_memory         = var.app_memory
     certbot_alb_name   = var.certbot_alb_name
     certbot_domains    = join(",", tolist(local.hostnames))
     certbot_email      = var.certbot_email

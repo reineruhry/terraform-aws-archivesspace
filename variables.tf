@@ -16,6 +16,11 @@ variable "app_img" {
   description = "ArchivesSpace img tag"
 }
 
+variable "app_memory" {
+  default     = 2048
+  description = "ArchivesSpace memory allocation"
+}
+
 variable "assign_public_ip" {
   default = false
 }
@@ -90,11 +95,6 @@ variable "instances" {
 
 variable "listener_priority" {
   description = "ALB listener priority (actual value is: int * 10)"
-}
-
-variable "memory" {
-  default     = 3072
-  description = "Task level memory allocation"
 }
 
 variable "name" {
