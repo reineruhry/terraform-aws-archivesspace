@@ -3,7 +3,7 @@ resource "aws_ecs_task_definition" "this" {
   network_mode             = var.network_mode
   requires_compatibilities = var.requires_compatibilities
   cpu                      = var.capacity_provider == "FARGATE" ? var.cpu : null
-  memory                   = var.memory
+  memory                   = local.memory
   execution_role_arn       = aws_iam_role.this.arn
   task_role_arn            = aws_iam_role.this.arn
 
