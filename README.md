@@ -11,7 +11,10 @@ task definition:
 
 ## Usage
 
-TODO.
+See the examples for deployment options:
+
+- [complete: includes all necessary resources](./examples/complete/README.md)
+- [services: configures the module using references to pre-existing resources](./examples/services/README.md)
 
 ## Notable configuration details
 
@@ -19,16 +22,25 @@ TODO.
 
 To deploy to an ECS/EC2 auto-scaling group:
 
-```hcl
+```ini
 capacity_provider        = "EC2"
 network_mode             = "bridge"
 requires_compatibilities = ["EC2"]
 target_type              = "instance"
 ```
 
+To deploy to an ECS/EC2 auto-scaling group with `awsvpc` network mode:
+
+```ini
+capacity_provider        = "EC2"
+network_mode             = "awsvpc"
+requires_compatibilities = ["EC2"]
+target_type              = "ip"
+```
+
 To deploy to Fargate (the default):
 
-```hcl
+```ini
 capacity_provider        = "FARGATE"
 network_mode             = "awsvpc"
 requires_compatibilities = ["FARGATE"]

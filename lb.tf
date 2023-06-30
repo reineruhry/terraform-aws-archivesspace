@@ -1,7 +1,7 @@
 resource "aws_lb_target_group" "this" {
   for_each = local.targets
 
-  name                 = "${var.name}-${each.key}"
+  name_prefix          = each.value.prefix
   port                 = each.value.port
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
@@ -20,6 +20,10 @@ resource "aws_lb_target_group" "this" {
   stickiness {
     enabled = true
     type    = "lb_cookie"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

@@ -68,6 +68,12 @@ module "archivesspace" {
   subnets            = data.aws_subnets.selected.ids
   timezone           = "America/New_York"
   vpc_id             = data.aws_vpc.selected.id
+
+  # networking (test with ec2/awsvpc)
+  capacity_provider        = "EC2"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["EC2"]
+  target_type              = "ip"
 }
 
 ################################################################################
