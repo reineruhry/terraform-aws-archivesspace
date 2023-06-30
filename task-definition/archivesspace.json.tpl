@@ -117,7 +117,7 @@
         "condition": "START"
       }
     ],
-    %{ if network_mode != "awsvpc" }
+    %{ if network_mode == "bridge" }
     "links": [
       "app"
     ],
@@ -188,7 +188,7 @@
         "condition": "START"
       }
     ],
-    %{ if network_mode != "awsvpc" }
+    %{ if network_mode == "bridge" }
     "links": [
       "solr"
     ],

@@ -63,6 +63,7 @@ locals {
       health    = "/health"
       paths     = ["*"]
       port      = local.certbot_port
+      prefix    = "certs"
     }
     proxy = {
       container = "proxy"
@@ -71,6 +72,7 @@ locals {
       health    = "/health"
       paths     = ["*"]
       port      = local.proxy_port
+      prefix    = "proxy"
     }
   }
 }
