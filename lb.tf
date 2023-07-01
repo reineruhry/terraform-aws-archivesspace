@@ -1,7 +1,7 @@
 resource "aws_lb_target_group" "this" {
   for_each = local.targets
 
-  name_prefix          = each.value.prefix
+  name_prefix          = "${each.value.prefix}-"
   port                 = each.value.port
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
