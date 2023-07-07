@@ -47,7 +47,7 @@ variable "cluster_id" {
 
 variable "cpu" {
   default     = 1024
-  description = "Task level CPU allocation (applies only when using Fargate)"
+  description = "Task level CPU allocation"
 }
 
 variable "custom_env_cfg" {

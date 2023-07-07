@@ -74,10 +74,9 @@ The `https_listener_arn` routes traffic to ArchivesSpace.
 
 #### Cpu
 
-This only applies to Fargate containers.
-
 ```hcl
 cpu = 1024 # 1 v/cpu default
+cpu = null # don't set a cpu constraint
 ```
 
 #### Memory
@@ -85,7 +84,7 @@ cpu = 1024 # 1 v/cpu default
 ```hcl
 app_memory  = 2048 # specific allocation to the aspace container
 solr_memory = 1024 # specific allocation to the solr container
+task_memory = 3072 # allocation for task (all containers)
 ```
 
-The task definition memory is set to (app_memory + solr_memory). When
-running on Fargate this needs to equal a [compatible value](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html).
+When running on Fargate the `task_memory` needs to equal a [compatible value](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html).
