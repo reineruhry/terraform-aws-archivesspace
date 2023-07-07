@@ -4,7 +4,7 @@ locals {
   data_volume   = "${var.name}-data"
   db_url        = "jdbc:mysql://${var.db_host}:3306/${var.db_name}?useUnicode=true&characterEncoding=UTF-8&user=${data.aws_ssm_parameter.db_username.value}&password=${data.aws_ssm_parameter.db_password.value}&useSSL=false&allowPublicKeyRetrieval=true"
   hostnames     = toset([var.public_hostname, var.staff_hostname])
-  memory        = var.app_memory + var.solr_memory
+  memory        = var.task_memory
   oai_prefix    = var.public_prefix != "/" ? "${var.public_prefix}oai" : "/oai"
   proxy_port    = 4000
   proxy_type    = var.public_hostname == var.staff_hostname ? "single" : "multi"
