@@ -164,6 +164,11 @@ variable "target_type" {
   default = "ip"
 }
 
+variable "task_memory" {
+  default     = 3072
+  description = "Memory allocation for task (must be >= app + solr memory)"
+}
+
 variable "timezone" {
   description = "Timezone"
 }
