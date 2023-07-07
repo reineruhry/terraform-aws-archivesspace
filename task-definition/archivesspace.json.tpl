@@ -137,6 +137,16 @@
     "networkMode": "${network_mode}",
     "essential": true,
     "environment": [
+      %{ for name, value in custom_env_cfg }
+      {
+        "name": "${name}",
+        "value": "${value}"
+      },
+      %{ endfor ~}
+      {
+        "name": "APPCONFIG_FRONTEND_COOKIE_SECRET",
+        "value": "${secret_key}"
+      },
       {
         "name": "APPCONFIG_FRONTEND_PROXY_URL",
         "value": "${staff_url}"
@@ -150,8 +160,24 @@
         "value": "${public_url}"
       },
       {
+        "name": "APPCONFIG_PUBLIC_COOKIE_SECRET",
+        "value": "${secret_key}"
+      },
+      {
+        "name": "APPCONFIG_PUBLIC_USER_SECRET",
+        "value": "${secret_key}"
+      },
+      {
+        "name": "APPCONFIG_SEARCH_USER_SECRET",
+        "value": "${secret_key}"
+      },
+      {
         "name": "APPCONFIG_SOLR_URL",
         "value": "${solr_url}"
+      },
+      {
+        "name": "APPCONFIG_STAFF_USER_SECRET",
+        "value": "${secret_key}"
       },
       {
         "name": "ASPACE_INITIALIZE_PLUGINS",
@@ -162,11 +188,21 @@
         "value": "-Xmx${app_memory}m"
       },
       {
+        "name": "JAVA_OPTS",
+        "value": "${java_opts}"
+      },
+      {
         "name": "TZ",
         "value": "${timezone}"
       }
     ],
     "secrets": [
+      %{ for name, value in custom_secrets_cfg }
+      {
+        "name": "${name}",
+        "valueFrom": "${value}"
+      },
+      %{ endfor ~}
       {
         "name": "APPCONFIG_DB_URL",
         "valueFrom": "${db_url}"

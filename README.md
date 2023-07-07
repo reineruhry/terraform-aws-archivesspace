@@ -18,6 +18,19 @@ See the examples for deployment options:
 
 ## Notable configuration details
 
+### Custom environment and secrets configuration
+
+Custom (non-predefined) environment and secrets configuration can be defined:
+
+```hcl
+custom_env_cfg = {
+  "APPCONFIG_BACKEND_LOG_LEVEL" = "info"
+}
+custom_secrets_cfg = {
+  "ASPACE_SECRET_KEY" = "arn:aws:ssm:us-east-2:111222333444:parameter/ASpaceSecretKey"
+}
+```
+
 ### Launch type
 
 To deploy to an ECS/EC2 auto-scaling group:

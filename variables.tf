@@ -93,6 +93,10 @@ variable "instances" {
   default = 1
 }
 
+variable "java_opts" {
+  default = "-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xss512k -Djavax.accessibility.assistive_technologies=''"
+}
+
 variable "name" {
   description = "AWS ECS resources name/alias (service name, task definition name etc.)"
 }

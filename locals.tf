@@ -33,6 +33,7 @@ locals {
     db_url             = aws_ssm_parameter.db-url.arn
     db_user            = data.aws_ssm_parameter.db_username.value
     initialize_plugins = var.initialize_plugins
+    java_opts          = var.java_opts
     log_group          = aws_cloudwatch_log_group.this.name
     name               = var.name
     network_mode       = var.network_mode
@@ -43,6 +44,7 @@ locals {
     public_prefix      = var.public_prefix
     public_url         = local.public_url
     region             = data.aws_region.current.name
+    secret_key         = random_password.secret_key.result
     solr_data          = local.solr_volume
     solr_img           = var.solr_img
     solr_memory        = var.solr_memory
