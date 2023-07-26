@@ -1,4 +1,4 @@
-# ArchivesSpace
+# ArchivesSpace services
 
 Configuration in this directory creates an ArchivesSpace deployment
 using pre-existing service dependencies (vpc, db, alb etc.).
@@ -16,6 +16,11 @@ terraform apply
 
 Without a `terraform.tfvars` file the deployment will use the
 default configuration (c.f. hosting repository).
+
+This will create:
+
+- https://archivesspace-services-pui.lyrtech.org
+- https://archivesspace-services-sui.lyrtech.org
 
 ### Override configuration
 
