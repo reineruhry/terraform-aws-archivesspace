@@ -8,31 +8,24 @@ intended for general use other than as a reference.*
 
 ## Usage
 
-To run this example you need to create `terraform.tfvars`:
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+Without a `terraform.tfvars` file the deployment will use the
+default configuration (c.f. hosting repository).
+
+### Override configuration
+
+Optionally create `terraform.tfvars`:
 
 ```bash
 cp terraform.tfvars.example terraform.tfvars
 ```
 
 Update the values as appropriate:
-
-```bash
-archivesspace_img   = "archivesspace/archivesspace:3.3.1"
-cluster_name        = "aspace-cluster"
-db_host             = "database.archivesspace.org"
-db_name             = "archivesspace"
-db_password_param   = "aspace-db-password"
-db_username_param   = "aspace-db-username"
-efs_name            = "aspace-efs"
-domain              = "archivesspace.org"
-lb_name             = "aspace-lb"
-security_group_name = "aspace-private-app"
-solr_img            = "archivesspace/solr:3.3.1"
-subnet_type         = "Private"
-vpc_name            = "aspace-vpc"
-```
-
-The key ones are:
 
 - `cluster_name`
   - the name of an existing ECS cluster
@@ -51,11 +44,3 @@ The key ones are:
   - the type (by tag) of existing subnets
 - `vpc_name`
   - the name of an existing vpc
-
-Then execute:
-
-```bash
-terraform init
-terraform plan
-terraform apply
-```
