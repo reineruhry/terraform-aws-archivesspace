@@ -256,6 +256,13 @@
         "containerPath": "/var/solr"
       }
     ],
+    "ulimits": [
+      {
+        "name": "nofile",
+        "softLimit": 65000,
+        "hardLimit": 65000
+      }
+    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
