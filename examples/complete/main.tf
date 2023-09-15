@@ -1,5 +1,5 @@
 variable "archivesspace_img" {
-  default = "archivesspace/archivesspace:3.3.1"
+  default = "archivesspace/archivesspace:latest"
 }
 
 variable "certificate_domain" {
@@ -19,7 +19,7 @@ variable "profile_for_dns" {
 }
 
 variable "solr_img" {
-  default = "archivesspace/solr:3.3.1"
+  default = "archivesspace/solr:latest"
 }
 
 provider "aws" {
@@ -90,6 +90,20 @@ module "archivesspace" {
   subnets            = module.vpc.private_subnets
   timezone           = "America/New_York"
   vpc_id             = module.vpc.vpc_id
+
+  # custom env & secrets
+  custom_env_cfg = {
+    "APPCONFIG_EMAIL_DELIVERY_METHOD"     = ":test"
+    "APPCONFIG_GLOBAL_EMAIL_FROM_ADDRESS" = "no-reply@example.org"
+    "SMTP_ADDRESS"                        = "mail.example.org"
+    "SMTP_DOMAIN"                         = "example.org"
+  }
+
+  # secrets can use arn or param name (if in the same account)
+  custom_secrets_cfg = {
+    "SMTP_PASSWORD" = aws_ssm_parameter.db_password.name
+    "SMTP_USERNAME" = aws_ssm_parameter.db_username.name
+  }
 }
 
 ################################################################################

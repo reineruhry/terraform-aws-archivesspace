@@ -4,8 +4,8 @@ resource "aws_lb_target_group" "this" {
   name_prefix          = "${each.value.prefix}-"
   port                 = each.value.port
   protocol             = "HTTP"
-  vpc_id               = var.vpc_id
-  target_type          = var.target_type
+  vpc_id               = local.vpc_id
+  target_type          = local.target_type
   deregistration_delay = 0
 
   health_check {

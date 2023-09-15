@@ -74,6 +74,20 @@ module "archivesspace" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
   target_type              = "ip"
+
+  # custom env & secrets
+  custom_env_cfg = {
+    "APPCONFIG_EMAIL_DELIVERY_METHOD"     = ":test"
+    "APPCONFIG_GLOBAL_EMAIL_FROM_ADDRESS" = var.smtp_from_address
+    "SMTP_ADDRESS"                        = var.smtp_address
+    "SMTP_DOMAIN"                         = var.smtp_domain
+  }
+
+  # secrets can use arn or param name (if in the same account)
+  custom_secrets_cfg = {
+    "SMTP_PASSWORD" = var.smtp_password_param
+    "SMTP_USERNAME" = var.smtp_username_param
+  }
 }
 
 ################################################################################
