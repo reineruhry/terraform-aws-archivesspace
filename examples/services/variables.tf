@@ -1,5 +1,5 @@
 variable "archivesspace_img" {
-  default = "archivesspace/archivesspace:3.3.1"
+  default = "archivesspace/archivesspace:latest"
 }
 
 variable "domain" {
@@ -7,7 +7,7 @@ variable "domain" {
 }
 
 variable "solr_img" {
-  default = "archivesspace/solr:3.3.1"
+  default = "archivesspace/solr:latest"
 }
 
 data "aws_availability_zones" "available" {}
@@ -36,6 +36,11 @@ variable "db_username_param" {}
 variable "efs_name" {}
 variable "lb_name" {}
 variable "security_group_name" {}
+variable "smtp_address" {}
+variable "smtp_domain" {}
+variable "smtp_from_address" {}
+variable "smtp_password_param" {}
+variable "smtp_username_param" {}
 variable "subnet_type" {}
 variable "vpc_name" {}
 
