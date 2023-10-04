@@ -1,5 +1,5 @@
 locals {
-  api_prefix               = local.staff_prefix != "/" ? "${local.staff_prefix}api/" : "/api/"
+  api_prefix               = local.staff_prefix != "/" ? "${local.staff_prefix}/api/" : "/api/"
   app_efs_id               = var.app_efs_id
   app_img                  = var.app_img
   app_memory               = var.app_memory
