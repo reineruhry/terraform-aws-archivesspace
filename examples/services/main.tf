@@ -75,6 +75,10 @@ module "archivesspace" {
   requires_compatibilities = ["EC2"]
   target_type              = "ip"
 
+  # ip access
+  app_api_ips_allowed = ["0.0.0.0/0"] # Test with: 127.0.0.1/32
+  app_pui_ips_allowed = ["0.0.0.0/0"] # Test with: 127.0.0.1/32
+
   # custom env & secrets
   custom_env_cfg = {
     "APPCONFIG_EMAIL_DELIVERY_METHOD"     = ":test"

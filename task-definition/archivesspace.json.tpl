@@ -74,6 +74,10 @@
     "essential": true,
     "environment": [
       {
+        "name": "API_IPS_ALLOWED",
+        "value": "${api_ips_allowed}"
+      },
+      {
         "name": "API_PREFIX",
         "value": "${api_prefix}"
       },
@@ -92,6 +96,14 @@
       {
         "name": "PUBLIC_PREFIX",
         "value": "${public_prefix}"
+      },
+      {
+        "name": "PUI_IPS_ALLOWED",
+        "value": "${pui_ips_allowed}"
+      },
+      {
+        "name": "REAL_IP_CIDR",
+        "value": "${real_ip_cidr}"
       },
       {
         "name": "STAFF_NAME",

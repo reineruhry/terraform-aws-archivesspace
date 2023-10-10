@@ -1,4 +1,5 @@
 locals {
+  api_ips_allowed          = join("; ", formatlist("allow %s", var.app_api_ips_allowed))
   api_prefix               = local.staff_prefix != "/" ? "${local.staff_prefix}/api/" : "/api/"
   app_efs_id               = var.app_efs_id
   app_img                  = var.app_img
@@ -39,6 +40,8 @@ locals {
   public_hostname          = var.public_hostname
   public_prefix            = var.public_prefix
   public_url               = "https://${local.public_hostname}${local.public_prefix}"
+  pui_ips_allowed          = join("; ", formatlist("allow %s", var.app_pui_ips_allowed))
+  real_ip_cidr             = "10.0.0.0/16" # TODO: var
   requires_compatibilities = var.requires_compatibilities
   security_group_id        = var.security_group_id
   solr_efs_id              = var.solr_efs_id
@@ -58,6 +61,7 @@ locals {
   vpc_id                   = var.vpc_id
 
   task_config = {
+    api_ips_allowed    = local.api_ips_allowed
     api_prefix         = local.api_prefix
     app_data           = local.data_volume
     app_img            = local.app_img
@@ -87,6 +91,8 @@ locals {
     public_hostname    = local.public_hostname
     public_prefix      = local.public_prefix
     public_url         = local.public_url
+    pui_ips_allowed    = local.pui_ips_allowed
+    real_ip_cidr       = local.real_ip_cidr
     region             = data.aws_region.current.name
     secret_key         = random_password.secret_key.result
     solr_data          = local.solr_volume
