@@ -10,6 +10,7 @@ services:
       PROXY_TYPE: "single"
       PUBLIC_NAME: "archivesspace-ex-complete.lyrtech.org"
       PUBLIC_PREFIX: "/"
+      REAL_IP_CIDR: "10.0.0.0/16"
       STAFF_NAME: "archivesspace-ex-complete.lyrtech.org"
       STAFF_PREFIX: "/staff/"
       UPSTREAM_HOST: ${UPSTREAM_HOST:-localhost}

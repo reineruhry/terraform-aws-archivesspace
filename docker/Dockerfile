@@ -5,6 +5,7 @@ ENV API_PREFIX="/api/" \
     PROXY_TYPE="single" \
     PUBLIC_NAME="" \
     PUBLIC_PREFIX="/" \
+    REAL_IP_CIDR="10.0.0.0/16" \
     STAFF_NAME="" \
     STAFF_PREFIX="/" \
     UPSTREAM_HOST="localhost"
