@@ -69,7 +69,7 @@
   },
   {
     "name": "proxy",
-    "image": "lyrasis/aspace-proxy:latest",
+    "image": "${proxy_img}",
     "networkMode": "${network_mode}",
     "essential": true,
     "environment": [

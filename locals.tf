@@ -32,6 +32,7 @@ locals {
   name                     = var.name
   network_mode             = var.network_mode
   oai_prefix               = local.public_prefix != "/" ? "${local.public_prefix}oai" : "/oai"
+  proxy_img                = "lyrasis/aspace-proxy:latest"
   proxy_port               = 4000
   proxy_type               = local.public_hostname == local.staff_hostname ? "single" : "multi"
   public_hostname          = var.public_hostname
@@ -78,6 +79,7 @@ locals {
     name               = local.name
     network_mode       = local.network_mode
     oai_prefix         = local.oai_prefix
+    proxy_img          = local.proxy_img
     proxy_port         = local.proxy_port
     proxy_type         = local.proxy_type
     public_hostname    = local.public_hostname
