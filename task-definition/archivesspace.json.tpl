@@ -1,7 +1,7 @@
 [
   {
     "name": "certbot",
-    "image": "lyrasis/certbot-acm:latest",
+    "image": "${certbot_img}",
     "networkMode": "${network_mode}",
     "essential": true,
     "environment": [

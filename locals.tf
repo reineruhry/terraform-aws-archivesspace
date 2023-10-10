@@ -9,6 +9,7 @@ locals {
   certbot_domains          = join(",", tolist(local.hostnames))
   certbot_email            = var.certbot_email
   certbot_enabled          = var.certbot_enabled ? "true" : "false"
+  certbot_img              = "lyrasis/certbot-acm:latest" # TODO: var
   certbot_port             = 80
   cluster_id               = var.cluster_id
   cpu                      = var.cpu
@@ -32,7 +33,7 @@ locals {
   name                     = var.name
   network_mode             = var.network_mode
   oai_prefix               = local.public_prefix != "/" ? "${local.public_prefix}oai" : "/oai"
-  proxy_img                = "lyrasis/aspace-proxy:latest"
+  proxy_img                = "lyrasis/aspace-proxy:latest" # TODO: var
   proxy_port               = 4000
   proxy_type               = local.public_hostname == local.staff_hostname ? "single" : "multi"
   public_hostname          = var.public_hostname
@@ -65,6 +66,7 @@ locals {
     certbot_domains    = local.certbot_domains
     certbot_email      = local.certbot_email
     certbot_enabled    = local.certbot_enabled
+    certbot_img        = local.certbot_img
     certbot_port       = local.certbot_port
     custom_env_cfg     = local.custom_env_cfg
     custom_secrets_cfg = local.custom_secrets_cfg
