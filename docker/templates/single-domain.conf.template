@@ -20,10 +20,14 @@ server {
   include /etc/nginx/common-config;
 
   location ${PUBLIC_PREFIX} {
+    ${PUI_IPS_ALLOWED};
+    deny all;
     proxy_pass http://app_public;
   }
 
   location ${OAI_PREFIX} {
+    ${PUI_IPS_ALLOWED};
+    deny all;
     proxy_pass http://app_oai/;
   }
 
@@ -32,6 +36,8 @@ server {
   }
 
   location ${API_PREFIX} {
+    ${API_IPS_ALLOWED};
+    deny all;
     proxy_pass http://app_api/;
   }
 }

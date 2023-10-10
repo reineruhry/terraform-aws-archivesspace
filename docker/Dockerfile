@@ -1,10 +1,12 @@
 FROM --platform=linux/amd64 nginx
 
-ENV API_PREFIX="/api/" \
+ENV API_IPS_ALLOWED="allow 0.0.0.0/0" \
+    API_PREFIX="/api/" \
     OAI_PREFIX="/oai" \
     PROXY_TYPE="single" \
     PUBLIC_NAME="" \
     PUBLIC_PREFIX="/" \
+    PUI_IPS_ALLOWED="allow 0.0.0.0/0" \
     REAL_IP_CIDR="10.0.0.0/16" \
     STAFF_NAME="" \
     STAFF_PREFIX="/" \
