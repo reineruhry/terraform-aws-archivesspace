@@ -16,19 +16,25 @@ upstream app_staff {
 
 server {
   server_name ${PUBLIC_NAME};
+  set_real_ip_from ${REAL_IP_CIDR};
   include /etc/nginx/common-config;
 
   location ${PUBLIC_PREFIX} {
+    ${PUI_IPS_ALLOWED};
+    deny all;
     proxy_pass http://app_public;
   }
 
   location ${OAI_PREFIX} {
+    ${PUI_IPS_ALLOWED};
+    deny all;
     proxy_pass http://app_oai/;
   }
 }
 
 server {
   server_name ${STAFF_NAME};
+  set_real_ip_from ${REAL_IP_CIDR};
   include /etc/nginx/common-config;
 
   location ${STAFF_PREFIX} {
@@ -36,6 +42,8 @@ server {
   }
 
   location ${API_PREFIX} {
+    ${API_IPS_ALLOWED};
+    deny all;
     proxy_pass http://app_api/;
   }
 }

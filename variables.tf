@@ -8,6 +8,11 @@ data "aws_ssm_parameter" "db_username" {
   name = var.db_username_param
 }
 
+variable "app_api_ips_allowed" {
+  default     = ["0.0.0.0/0"]
+  description = "List of IP addresses (CIDR notation) allowed access to the API"
+}
+
 variable "app_efs_id" {
   description = "EFS id for ArchivesSpace data directory"
 }
@@ -19,6 +24,11 @@ variable "app_img" {
 variable "app_memory" {
   default     = 2048
   description = "ArchivesSpace memory allocation"
+}
+
+variable "app_pui_ips_allowed" {
+  default     = ["0.0.0.0/0"]
+  description = "List of IP addresses (CIDR notation) allowed access to the PUI"
 }
 
 variable "assign_public_ip" {

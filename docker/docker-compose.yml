@@ -5,11 +5,14 @@ services:
     build:
       context: .
     environment:
+      API_IPS_ALLOWED: "allow 0.0.0.0/0"
       API_PREFIX: "/api/"
       OAI_PREFIX: "/oai"
       PROXY_TYPE: "single"
       PUBLIC_NAME: "archivesspace-ex-complete.lyrtech.org"
       PUBLIC_PREFIX: "/"
+      PUI_IPS_ALLOWED: "allow 0.0.0.0/0"
+      REAL_IP_CIDR: "10.0.0.0/16"
       STAFF_NAME: "archivesspace-ex-complete.lyrtech.org"
       STAFF_PREFIX: "/staff/"
       UPSTREAM_HOST: ${UPSTREAM_HOST:-localhost}

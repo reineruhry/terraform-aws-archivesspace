@@ -1,4 +1,5 @@
 locals {
+  api_ips_allowed          = join("; ", formatlist("allow %s", var.app_api_ips_allowed))
   api_prefix               = local.staff_prefix != "/" ? "${local.staff_prefix}/api/" : "/api/"
   app_efs_id               = var.app_efs_id
   app_img                  = var.app_img
@@ -9,6 +10,7 @@ locals {
   certbot_domains          = join(",", tolist(local.hostnames))
   certbot_email            = var.certbot_email
   certbot_enabled          = var.certbot_enabled ? "true" : "false"
+  certbot_img              = "lyrasis/certbot-acm:latest" # TODO: var
   certbot_port             = 80
   cluster_id               = var.cluster_id
   cpu                      = var.cpu
@@ -32,11 +34,14 @@ locals {
   name                     = var.name
   network_mode             = var.network_mode
   oai_prefix               = local.public_prefix != "/" ? "${local.public_prefix}oai" : "/oai"
+  proxy_img                = "lyrasis/aspace-proxy:latest" # TODO: var
   proxy_port               = 4000
   proxy_type               = local.public_hostname == local.staff_hostname ? "single" : "multi"
   public_hostname          = var.public_hostname
   public_prefix            = var.public_prefix
   public_url               = "https://${local.public_hostname}${local.public_prefix}"
+  pui_ips_allowed          = join("; ", formatlist("allow %s", var.app_pui_ips_allowed))
+  real_ip_cidr             = "10.0.0.0/16" # TODO: var
   requires_compatibilities = var.requires_compatibilities
   security_group_id        = var.security_group_id
   solr_efs_id              = var.solr_efs_id
@@ -56,6 +61,7 @@ locals {
   vpc_id                   = var.vpc_id
 
   task_config = {
+    api_ips_allowed    = local.api_ips_allowed
     api_prefix         = local.api_prefix
     app_data           = local.data_volume
     app_img            = local.app_img
@@ -64,6 +70,7 @@ locals {
     certbot_domains    = local.certbot_domains
     certbot_email      = local.certbot_email
     certbot_enabled    = local.certbot_enabled
+    certbot_img        = local.certbot_img
     certbot_port       = local.certbot_port
     custom_env_cfg     = local.custom_env_cfg
     custom_secrets_cfg = local.custom_secrets_cfg
@@ -78,11 +85,14 @@ locals {
     name               = local.name
     network_mode       = local.network_mode
     oai_prefix         = local.oai_prefix
+    proxy_img          = local.proxy_img
     proxy_port         = local.proxy_port
     proxy_type         = local.proxy_type
     public_hostname    = local.public_hostname
     public_prefix      = local.public_prefix
     public_url         = local.public_url
+    pui_ips_allowed    = local.pui_ips_allowed
+    real_ip_cidr       = local.real_ip_cidr
     region             = data.aws_region.current.name
     secret_key         = random_password.secret_key.result
     solr_data          = local.solr_volume
