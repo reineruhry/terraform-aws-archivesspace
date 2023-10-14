@@ -180,6 +180,10 @@
         "value": "${secret_key}"
       },
       {
+        "name": "APPCONFIG_REQUEST_USER_SECRET",
+        "value": "${secret_key}"
+      },
+      {
         "name": "APPCONFIG_SEARCH_USER_SECRET",
         "value": "${secret_key}"
       },
