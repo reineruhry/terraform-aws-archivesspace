@@ -196,6 +196,10 @@
         "value": "${secret_key}"
       },
       {
+        "name": "ASPACE_DB_MIGRATE",
+        "value": "${db_migrate}"
+      },
+      {
         "name": "ASPACE_INITIALIZE_PLUGINS",
         "value": "${initialize_plugins}"
       },
