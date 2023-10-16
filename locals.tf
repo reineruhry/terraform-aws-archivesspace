@@ -18,6 +18,7 @@ locals {
   custom_secrets_cfg       = var.custom_secrets_cfg
   data_volume              = "${local.name}-data"
   db_host                  = var.db_host
+  db_migrate               = local.instances == 1 ? true : false
   db_name                  = var.db_name
   db_password              = data.aws_ssm_parameter.db_password.value
   db_password_param        = var.db_password_param
@@ -75,6 +76,7 @@ locals {
     custom_env_cfg     = local.custom_env_cfg
     custom_secrets_cfg = local.custom_secrets_cfg
     db_host            = local.db_host
+    db_migrate         = local.db_migrate
     db_name            = local.db_name
     db_password_arn    = data.aws_ssm_parameter.db_password.arn
     db_url             = aws_ssm_parameter.db-url.arn

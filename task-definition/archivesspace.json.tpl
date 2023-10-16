@@ -180,6 +180,10 @@
         "value": "${secret_key}"
       },
       {
+        "name": "APPCONFIG_REQUEST_USER_SECRET",
+        "value": "${secret_key}"
+      },
+      {
         "name": "APPCONFIG_SEARCH_USER_SECRET",
         "value": "${secret_key}"
       },
@@ -190,6 +194,10 @@
       {
         "name": "APPCONFIG_STAFF_USER_SECRET",
         "value": "${secret_key}"
+      },
+      {
+        "name": "ASPACE_DB_MIGRATE",
+        "value": "${db_migrate}"
       },
       {
         "name": "ASPACE_INITIALIZE_PLUGINS",
