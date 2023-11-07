@@ -115,6 +115,15 @@ variable "network_mode" {
   default = "awsvpc"
 }
 
+variable "placement_strategies" {
+  default = {
+    pack-by-memory = {
+      field = "memory"
+      type  = "binpack"
+    }
+  }
+}
+
 variable "public_hostname" {
   description = "Hostname for ArchivesSpace public interface"
 }
