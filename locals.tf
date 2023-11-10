@@ -16,7 +16,6 @@ locals {
   cpu                      = var.cpu
   custom_env_cfg           = var.custom_env_cfg
   custom_secrets_cfg       = var.custom_secrets_cfg
-  data_volume              = "${local.name}-data"
   db_host                  = var.db_host
   db_migrate               = local.instances == 1 ? true : false
   db_name                  = var.db_name
@@ -28,6 +27,8 @@ locals {
   hostnames                = toset([local.public_hostname, local.staff_hostname])
   http_listener_arn        = var.http_listener_arn
   https_listener_arn       = var.https_listener_arn
+  indexer_pui_state_volume = "${local.name}-indexer_pui_state"
+  indexer_state_volume     = "${local.name}-indexer_state"
   initialize_plugins       = var.initialize_plugins
   instances                = var.instances
   java_opts                = var.java_opts
@@ -65,7 +66,6 @@ locals {
   task_config = {
     api_ips_allowed    = local.api_ips_allowed
     api_prefix         = local.api_prefix
-    app_data           = local.data_volume
     app_img            = local.app_img
     app_memory         = local.app_memory
     certbot_alb_name   = local.certbot_alb_name
@@ -82,6 +82,8 @@ locals {
     db_password_arn    = data.aws_ssm_parameter.db_password.arn
     db_url             = aws_ssm_parameter.db-url.arn
     db_user            = data.aws_ssm_parameter.db_username.value
+    indexer_pui_state  = local.indexer_pui_state_volume
+    indexer_state      = local.indexer_state_volume
     initialize_plugins = local.initialize_plugins
     java_opts          = local.java_opts
     log_group          = aws_cloudwatch_log_group.this.name

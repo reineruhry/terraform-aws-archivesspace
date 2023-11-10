@@ -230,8 +230,12 @@
     ],
     "mountPoints": [
       {
-        "sourceVolume": "${app_data}",
-        "containerPath": "/archivesspace/data"
+        "sourceVolume": "${indexer_pui_state}",
+        "containerPath": "/archivesspace/data/indexer_pui_state"
+      },
+      {
+        "sourceVolume": "${indexer_state}",
+        "containerPath": "/archivesspace/data/indexer_state"
       }
     ],
     "dependsOn": [

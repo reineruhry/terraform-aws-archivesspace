@@ -10,14 +10,27 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = templatefile("${path.module}/task-definition/archivesspace.json.tpl", local.task_config)
 
   volume {
-    name = local.data_volume
+    name = local.indexer_pui_state_volume
 
     efs_volume_configuration {
       file_system_id     = local.app_efs_id
       transit_encryption = "ENABLED"
 
       authorization_config {
-        access_point_id = aws_efs_access_point.data.id
+        access_point_id = aws_efs_access_point.indexer_pui_state.id
+      }
+    }
+  }
+
+  volume {
+    name = local.indexer_state_volume
+
+    efs_volume_configuration {
+      file_system_id     = local.app_efs_id
+      transit_encryption = "ENABLED"
+
+      authorization_config {
+        access_point_id = aws_efs_access_point.indexer_state.id
       }
     }
   }
@@ -81,11 +94,24 @@ resource "aws_ecs_service" "this" {
   tags = local.tags
 }
 
-resource "aws_efs_access_point" "data" {
+resource "aws_efs_access_point" "indexer_pui_state" {
   file_system_id = local.app_efs_id
 
   root_directory {
-    path = "/${local.data_volume}"
+    path = "/${local.indexer_pui_state_volume}"
+    creation_info {
+      owner_gid   = 1000
+      owner_uid   = 1000
+      permissions = "755"
+    }
+  }
+}
+
+resource "aws_efs_access_point" "indexer_state" {
+  file_system_id = local.app_efs_id
+
+  root_directory {
+    path = "/${local.indexer_state_volume}"
     creation_info {
       owner_gid   = 1000
       owner_uid   = 1000
