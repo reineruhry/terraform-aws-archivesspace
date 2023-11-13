@@ -230,8 +230,12 @@
     ],
     "mountPoints": [
       {
-        "sourceVolume": "${app_data}",
-        "containerPath": "/archivesspace/data"
+        "sourceVolume": "${indexer_pui_state}",
+        "containerPath": "/archivesspace/data/indexer_pui_state"
+      },
+      {
+        "sourceVolume": "${indexer_state}",
+        "containerPath": "/archivesspace/data/indexer_state"
       }
     ],
     "dependsOn": [
@@ -263,7 +267,14 @@
     "image": "${solr_img}",
     "networkMode": "${network_mode}",
     "essential": true,
-    "command": ["solr-create", "-p", "8983", "-c", "archivesspace", "-d", "archivesspace"],
+    "command": [
+      "/bin/bash",
+      "-c",
+      "${join(" ", [
+        "cp /opt/solr/server/solr/configsets/archivesspace/conf/* /var/solr/data/archivesspace/conf/;",
+        "solr-create -p 8983 -c archivesspace -d archivesspace"
+      ])}"
+    ],
     "environment": [
       {
         "name": "SOLR_JAVA_MEM",
