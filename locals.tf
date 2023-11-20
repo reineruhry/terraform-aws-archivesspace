@@ -4,6 +4,7 @@ locals {
   app_efs_id               = var.app_efs_id
   app_img                  = var.app_img
   app_memory               = var.app_memory
+  app_pui_ips_allowed      = var.app_pui_ips_allowed
   assign_public_ip         = var.assign_public_ip
   capacity_provider        = var.capacity_provider
   certbot_alb_name         = var.certbot_alb_name
@@ -43,7 +44,7 @@ locals {
   public_hostname          = var.public_hostname
   public_prefix            = var.public_prefix
   public_url               = "https://${local.public_hostname}${local.public_prefix}"
-  pui_ips_allowed          = join("; ", formatlist("allow %s", var.app_pui_ips_allowed))
+  pui_ips_allowed          = join("; ", formatlist("allow %s", local.app_pui_ips_allowed))
   real_ip_cidr             = "10.0.0.0/16" # TODO: var
   requires_compatibilities = var.requires_compatibilities
   security_group_id        = var.security_group_id
