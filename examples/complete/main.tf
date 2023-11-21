@@ -112,7 +112,7 @@ module "archivesspace" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "5.2.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -137,7 +137,7 @@ module "vpc" {
 
 module "alb_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+  version = "5.1.0"
 
   name        = "${local.name}-alb"
   description = "ALB security group"
@@ -172,7 +172,7 @@ module "alb_sg" {
 
 module "archivesspace_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+  version = "5.1.0"
 
   name        = "${local.name}-archivesspace"
   description = "Complete ArchivesSpace example security group"
@@ -258,7 +258,7 @@ module "archivesspace_sg" {
 
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 8.0"
+  version = "9.2.0"
 
   name               = local.name
   load_balancer_type = "application"
@@ -268,42 +268,40 @@ module "alb" {
   security_groups       = [module.alb_sg.security_group_id]
   create_security_group = false
 
-  # Fixed responses for default actions
-  http_tcp_listeners = [
-    {
+  listeners = {
+    http = {
+      action_type = "redirect"
       port        = 80
       protocol    = "HTTP"
-      action_type = "redirect"
 
       redirect = {
         port        = "443"
         protocol    = "HTTPS"
         status_code = "HTTP_301"
       }
-    },
-  ]
+    }
 
-  https_listeners = [
-    {
+    https = {
+      action_type     = "fixed-response"
+      certificate_arn = data.aws_acm_certificate.issued.arn
       port            = 443
       protocol        = "HTTPS"
-      certificate_arn = data.aws_acm_certificate.issued.arn
-      action_type     = "fixed-response"
+      ssl_policy      = "ELBSecurityPolicy-2016-08"
 
       fixed_response = {
         content_type = "text/plain"
         message_body = "Nothing to see here!"
         status_code  = "200"
       }
-    },
-  ]
+    }
+  }
 
   tags = local.tags
 }
 
 module "efs" {
   source  = "terraform-aws-modules/efs/aws"
-  version = "~> 1.0"
+  version = "1.3.1"
 
   # File system
   name      = local.name
@@ -368,7 +366,7 @@ module "efs" {
 
 module "ecs" {
   source  = "terraform-aws-modules/ecs/aws"
-  version = "~> 4.0"
+  version = "5.7.2"
 
   cluster_name = local.name
 
@@ -391,7 +389,7 @@ module "ecs" {
 
 module "db" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "~> 5.0"
+  version = "6.3.0"
 
   identifier = local.name
 
@@ -408,10 +406,10 @@ module "db" {
   password = aws_ssm_parameter.db_password.value
   username = aws_ssm_parameter.db_username.value
 
-  create_random_password = false
-  multi_az               = false
-  db_subnet_group_name   = module.vpc.database_subnet_group
-  vpc_security_group_ids = [module.archivesspace_sg.security_group_id]
+  manage_master_user_password = false
+  multi_az                    = false
+  db_subnet_group_name        = module.vpc.database_subnet_group
+  vpc_security_group_ids      = [module.archivesspace_sg.security_group_id]
 
   enabled_cloudwatch_logs_exports = []
   create_cloudwatch_log_group     = true
