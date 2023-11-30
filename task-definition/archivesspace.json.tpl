@@ -180,6 +180,10 @@
         "value": "${secret_key}"
       },
       {
+        "name": "APPCONFIG_PUI_INDEXER_ENABLED",
+        "value": "${pui_indexer_enabled}"
+      },
+      {
         "name": "APPCONFIG_REQUEST_USER_SECRET",
         "value": "${secret_key}"
       },

@@ -124,6 +124,12 @@ variable "placement_strategies" {
   }
 }
 
+variable "public_enabled" {
+  type        = bool
+  default     = true
+  description = "Control access to the public interface (false overrides public hostname/prefix, prevents all remote access & disables the indexer)"
+}
+
 variable "public_hostname" {
   description = "Hostname for ArchivesSpace public interface"
 }
