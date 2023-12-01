@@ -1,5 +1,5 @@
 locals {
-  api_ips_allowed          = local.public_enabled ? join("; ", formatlist("allow %s", var.app_api_ips_allowed)) : "allow 127.0.0.1/32;"
+  api_ips_allowed          = join("; ", formatlist("allow %s", var.app_api_ips_allowed))
   api_prefix               = local.staff_prefix != "/" ? "${local.staff_prefix}/api/" : "/api/"
   app_efs_id               = var.app_efs_id
   app_img                  = var.app_img
@@ -45,7 +45,7 @@ locals {
   public_hostname          = local.public_enabled ? var.public_hostname : local.staff_hostname
   public_prefix            = local.public_enabled ? var.public_prefix : "/disabled/"
   public_url               = "https://${local.public_hostname}${local.public_prefix}"
-  pui_ips_allowed          = join("; ", formatlist("allow %s", local.app_pui_ips_allowed))
+  pui_ips_allowed          = local.public_enabled ? join("; ", formatlist("allow %s", local.app_pui_ips_allowed)) : "allow 127.0.0.1/32"
   real_ip_cidr             = "10.0.0.0/16" # TODO: var
   requires_compatibilities = var.requires_compatibilities
   security_group_id        = var.security_group_id
