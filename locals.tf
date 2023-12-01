@@ -51,6 +51,7 @@ locals {
   security_group_id        = var.security_group_id
   solr_efs_id              = var.solr_efs_id
   solr_img                 = var.solr_img
+  solr_lock_type           = "simple"
   solr_memory              = var.solr_memory
   solr_url                 = "http://${local.network_mode == "awsvpc" ? "localhost" : "solr"}:8983/solr/archivesspace"
   solr_volume              = "${local.name}-solr"
@@ -105,6 +106,7 @@ locals {
     secret_key          = random_password.secret_key.result
     solr_data           = local.solr_volume
     solr_img            = local.solr_img
+    solr_lock_type      = local.solr_lock_type
     solr_memory         = local.solr_memory
     solr_url            = local.solr_url
     staff_hostname      = local.staff_hostname
