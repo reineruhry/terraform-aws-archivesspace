@@ -18,7 +18,7 @@ locals {
   custom_env_cfg           = var.custom_env_cfg
   custom_secrets_cfg       = var.custom_secrets_cfg
   db_host                  = var.db_host
-  db_migrate               = local.instances == 1 ? true : false
+  db_migrate               = local.instances != 1 ? false : var.db_migrate # it's not safe to run migrations with > 1 instances running
   db_name                  = var.db_name
   db_password              = data.aws_ssm_parameter.db_password.value
   db_password_param        = var.db_password_param
@@ -42,6 +42,7 @@ locals {
   proxy_port               = 4000
   proxy_type               = local.public_hostname == local.staff_hostname ? "single" : "multi"
   public_enabled           = var.public_enabled
+  proxy_health_path        = local.db_migrate ? "/health" : "/status" # "/health" is a canned response, always returning http status 200
   public_hostname          = local.public_enabled ? var.public_hostname : local.staff_hostname
   public_prefix            = local.public_enabled ? var.public_prefix : "/disabled/"
   public_url               = "https://${local.public_hostname}${local.public_prefix}"
@@ -51,6 +52,7 @@ locals {
   security_group_id        = var.security_group_id
   solr_efs_id              = var.solr_efs_id
   solr_img                 = var.solr_img
+  solr_lock_type           = "simple"
   solr_memory              = var.solr_memory
   solr_url                 = "http://${local.network_mode == "awsvpc" ? "localhost" : "solr"}:8983/solr/archivesspace"
   solr_volume              = "${local.name}-solr"
@@ -105,6 +107,7 @@ locals {
     secret_key          = random_password.secret_key.result
     solr_data           = local.solr_volume
     solr_img            = local.solr_img
+    solr_lock_type      = local.solr_lock_type
     solr_memory         = local.solr_memory
     solr_url            = local.solr_url
     staff_hostname      = local.staff_hostname
@@ -129,7 +132,7 @@ locals {
       container = "proxy"
       arn       = local.https_listener_arn
       hosts     = local.hostnames
-      health    = "/health"
+      health    = local.proxy_health_path
       paths     = ["*"]
       port      = local.proxy_port
       prefix    = "proxy"

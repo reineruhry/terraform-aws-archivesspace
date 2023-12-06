@@ -52,6 +52,7 @@ module "archivesspace" {
   certbot_enabled    = true
   cluster_id         = data.aws_ecs_cluster.selected.id
   db_host            = var.db_host
+  db_migrate         = true
   db_name            = "archivesspace"
   db_password_param  = var.db_password_param
   db_username_param  = var.db_username_param

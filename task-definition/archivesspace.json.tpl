@@ -282,7 +282,7 @@
     "environment": [
       {
         "name": "SOLR_JAVA_MEM",
-        "value": "-Xms${solr_memory}m -Xmx${solr_memory}m"
+        "value": "-Xms${solr_memory}m -Xmx${solr_memory}m -Dsolr.lock.type=${solr_lock_type}"
       }
     ],
     "mountPoints": [

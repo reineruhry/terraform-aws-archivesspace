@@ -74,6 +74,11 @@ variable "db_host" {
   description = "ArchivesSpace db host"
 }
 
+variable "db_migrate" {
+  default     = false
+  description = "Run the ArchivesSpace database migration script on startup"
+}
+
 variable "db_name" {
   description = "ArchivesSpace db name"
 }
