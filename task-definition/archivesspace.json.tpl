@@ -246,56 +246,6 @@
       {
         "containerName": "createdb",
         "condition": "COMPLETE"
-      },
-      {
-        "containerName": "solr",
-        "condition": "START"
-      }
-    ],
-    %{ if network_mode == "bridge" }
-    "links": [
-      "solr"
-    ],
-    %{ endif ~}
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "${log_group}",
-        "awslogs-region": "${region}",
-        "awslogs-stream-prefix": "archivesspace"
-      }
-    }
-  },
-  {
-    "name": "solr",
-    "image": "${solr_img}",
-    "networkMode": "${network_mode}",
-    "essential": true,
-    "command": [
-      "/bin/bash",
-      "-c",
-      "${join(" ", [
-        "cp /opt/solr/server/solr/configsets/archivesspace/conf/* /var/solr/data/archivesspace/conf/;",
-        "solr-create -p 8983 -c archivesspace -d archivesspace"
-      ])}"
-    ],
-    "environment": [
-      {
-        "name": "SOLR_JAVA_MEM",
-        "value": "-Xms${solr_memory}m -Xmx${solr_memory}m -Dsolr.lock.type=${solr_lock_type}"
-      }
-    ],
-    "mountPoints": [
-      {
-        "sourceVolume": "${solr_data}",
-        "containerPath": "/var/solr"
-      }
-    ],
-    "ulimits": [
-      {
-        "name": "nofile",
-        "softLimit": 65000,
-        "hardLimit": 65000
       }
     ],
     "logConfiguration": {

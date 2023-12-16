@@ -45,8 +45,9 @@ data "aws_route53_zone" "selected" {
 }
 
 locals {
-  name   = "archivesspace-ex-${basename(path.cwd)}"
-  region = "us-west-2"
+  name    = "archivesspace-ex-${basename(path.cwd)}"
+  region  = "us-west-2"
+  service = "ex-complete"
 
   vpc_cidr = "10.99.0.0/18"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -65,6 +66,25 @@ locals {
 # ArchivesSpace resources
 ################################################################################
 
+module "solr" {
+  source = "../../modules/solr"
+
+  cluster_id           = data.aws_ecs_cluster.selected.id
+  cpu                  = null
+  efs_id               = data.aws_efs_file_system.selected.id
+  img                  = var.solr_img
+  name                 = "${local.service}-solr"
+  security_group_id    = data.aws_security_group.selected.id
+  service_discovery_id = aws_service_discovery_private_dns_namespace.this.id
+  subnets              = data.aws_subnets.selected.ids
+  vpc_id               = data.aws_vpc.selected.id
+
+  # networking (tests Solr on ec2 with service discovery)
+  capacity_provider        = "EC2"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["EC2"]
+}
+
 module "archivesspace" {
   source = "../.."
 
@@ -80,11 +100,10 @@ module "archivesspace" {
   db_username_param  = aws_ssm_parameter.db_username.name
   http_listener_arn  = module.alb.http_tcp_listener_arns[0]
   https_listener_arn = module.alb.https_listener_arns[0]
-  name               = "ex-complete"
+  name               = local.service
   public_hostname    = "${local.name}.${var.domain}"
   security_group_id  = module.archivesspace_sg.security_group_id
-  solr_efs_id        = module.efs.id
-  solr_img           = var.solr_img
+  solr_url           = "http://${local.service}-solr.aspace.solr:8983/solr/archivesspace"
   staff_hostname     = "${local.name}.${var.domain}"
   staff_prefix       = "/staff/"
   subnets            = module.vpc.private_subnets
@@ -104,6 +123,8 @@ module "archivesspace" {
     "SMTP_PASSWORD" = aws_ssm_parameter.db_password.name
     "SMTP_USERNAME" = aws_ssm_parameter.db_username.name
   }
+
+  depends_on = [module.solr]
 }
 
 ################################################################################
@@ -457,6 +478,11 @@ resource "aws_route53_record" "this" {
     zone_id                = module.alb.lb_zone_id
     evaluate_target_health = false
   }
+}
+
+resource "aws_service_discovery_private_dns_namespace" "this" {
+  name = "aspace.solr"
+  vpc  = module.vpc.vpc_id
 }
 
 resource "aws_ssm_parameter" "db_password" {

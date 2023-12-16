@@ -41,6 +41,7 @@ variable "smtp_domain" {}
 variable "smtp_from_address" {}
 variable "smtp_password_param" {}
 variable "smtp_username_param" {}
+variable "solr_discovery_namespace" {}
 variable "subnet_type" {}
 variable "vpc_name" {}
 
@@ -73,6 +74,11 @@ data "aws_security_group" "selected" {
     name   = "tag:Name"
     values = [var.security_group_name]
   }
+}
+
+data "aws_service_discovery_dns_namespace" "solr" {
+  name = var.solr_discovery_namespace
+  type = "DNS_PRIVATE"
 }
 
 data "aws_subnets" "selected" {

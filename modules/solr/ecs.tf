@@ -7,36 +7,23 @@ resource "aws_ecs_task_definition" "this" {
   execution_role_arn       = aws_iam_role.this.arn
   task_role_arn            = aws_iam_role.this.arn
 
-  container_definitions = templatefile("${path.module}/task-definition/archivesspace.json.tpl", local.task_config)
+  container_definitions = templatefile("${path.module}/task-definition/solr.json.tpl", local.task_config)
 
   volume {
-    name = local.indexer_pui_state_volume
+    name = local.data_volume
 
     efs_volume_configuration {
-      file_system_id     = local.app_efs_id
+      file_system_id     = local.efs_id
       transit_encryption = "ENABLED"
 
       authorization_config {
-        access_point_id = aws_efs_access_point.indexer_pui_state.id
-      }
-    }
-  }
-
-  volume {
-    name = local.indexer_state_volume
-
-    efs_volume_configuration {
-      file_system_id     = local.app_efs_id
-      transit_encryption = "ENABLED"
-
-      authorization_config {
-        access_point_id = aws_efs_access_point.indexer_state.id
+        access_point_id = aws_efs_access_point.data.id
       }
     }
   }
 }
 
-resource "aws_ecs_service" "this" {
+resource "aws_ecs_service" "solr" {
   name            = local.name
   cluster         = local.cluster_id
   task_definition = aws_ecs_task_definition.this.arn
@@ -50,15 +37,6 @@ resource "aws_ecs_service" "this" {
   capacity_provider_strategy {
     capacity_provider = local.capacity_provider
     weight            = 100
-  }
-
-  dynamic "load_balancer" {
-    for_each = local.targets
-    content {
-      container_name   = load_balancer.value.container
-      container_port   = load_balancer.value.port
-      target_group_arn = aws_lb_target_group.this[load_balancer.key].arn
-    }
   }
 
   dynamic "network_configuration" {
@@ -78,47 +56,48 @@ resource "aws_ecs_service" "this" {
     }
   }
 
+  service_registries {
+    container_name = local.network_mode == "awsvpc" ? null : "solr"
+    container_port = local.network_mode == "awsvpc" ? null : local.port
+    registry_arn   = aws_service_discovery_service.this.arn
+  }
+
   tags = local.tags
 }
 
-resource "aws_efs_access_point" "indexer_pui_state" {
-  file_system_id = local.app_efs_id
+resource "aws_service_discovery_service" "this" {
+  name = local.name
 
-  root_directory {
-    path = "/${local.indexer_pui_state_volume}"
-    creation_info {
-      owner_gid   = 1000
-      owner_uid   = 1000
-      permissions = "755"
+  dns_config {
+    namespace_id = local.service_discovery_id
+
+    dns_records {
+      ttl  = 10
+      type = local.service_discovery_dns_type
     }
+
+    routing_policy = "MULTIVALUE"
+  }
+
+  health_check_custom_config {
+    failure_threshold = 5
   }
 }
 
-resource "aws_efs_access_point" "indexer_state" {
-  file_system_id = local.app_efs_id
+resource "aws_efs_access_point" "data" {
+  file_system_id = local.efs_id
 
   root_directory {
-    path = "/${local.indexer_state_volume}"
+    path = "/${local.data_volume}"
     creation_info {
-      owner_gid   = 1000
-      owner_uid   = 1000
+      owner_gid   = 8983
+      owner_uid   = 8983
       permissions = "755"
     }
   }
-}
-
-resource "aws_ssm_parameter" "db-url" {
-  name  = "${local.name}-db-url"
-  type  = "SecureString"
-  value = local.db_url
 }
 
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/ecs/${local.name}"
   retention_in_days = 7
-}
-
-resource "random_password" "secret_key" {
-  length  = 16
-  special = false
 }

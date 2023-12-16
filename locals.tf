@@ -50,12 +50,7 @@ locals {
   real_ip_cidr             = "10.0.0.0/16" # TODO: var
   requires_compatibilities = var.requires_compatibilities
   security_group_id        = var.security_group_id
-  solr_efs_id              = var.solr_efs_id
-  solr_img                 = var.solr_img
-  solr_lock_type           = "simple"
-  solr_memory              = var.solr_memory
-  solr_url                 = "http://${local.network_mode == "awsvpc" ? "localhost" : "solr"}:8983/solr/archivesspace"
-  solr_volume              = "${local.name}-solr"
+  solr_url                 = var.solr_url
   staff_hostname           = var.staff_hostname
   staff_prefix             = var.staff_prefix != "/" ? trimsuffix(var.staff_prefix, "/") : var.staff_prefix
   staff_url                = "https://${local.staff_hostname}${local.staff_prefix}"
@@ -105,10 +100,6 @@ locals {
     real_ip_cidr        = local.real_ip_cidr
     region              = data.aws_region.current.name
     secret_key          = random_password.secret_key.result
-    solr_data           = local.solr_volume
-    solr_img            = local.solr_img
-    solr_lock_type      = local.solr_lock_type
-    solr_memory         = local.solr_memory
     solr_url            = local.solr_url
     staff_hostname      = local.staff_hostname
     staff_prefix        = local.staff_prefix

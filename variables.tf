@@ -157,17 +157,8 @@ variable "security_group_id" {
   description = "Security group id"
 }
 
-variable "solr_efs_id" {
-  description = "EFS id for Solr data"
-}
-
-variable "solr_img" {
-  description = "Solr img tag"
-}
-
-variable "solr_memory" {
-  default     = 1024
-  description = "Memory allocation for Solr"
+variable "solr_url" {
+  description = "ArchivesSpace solr url (example: http://localhost:8983/solr/archivesspace)"
 }
 
 variable "staff_hostname" {
@@ -200,7 +191,7 @@ variable "target_type" {
 
 variable "task_memory" {
   default     = 3072
-  description = "Memory allocation for task (must be >= app + solr memory)"
+  description = "Memory allocation for task (must be >= app memory)"
 }
 
 variable "timezone" {

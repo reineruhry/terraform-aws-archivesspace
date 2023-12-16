@@ -28,8 +28,9 @@ provider "aws" {
 }
 
 locals {
-  name   = "archivesspace-${basename(path.cwd)}"
-  region = "us-west-2"
+  name    = "archivesspace-${basename(path.cwd)}"
+  region  = "us-west-2"
+  service = "ex-service"
 
   tags = {
     Name       = local.name
@@ -42,6 +43,25 @@ locals {
 # ArchivesSpace resources
 ################################################################################
 
+module "solr" {
+  source = "../../modules/solr"
+
+  cluster_id           = data.aws_ecs_cluster.selected.id
+  cpu                  = null
+  efs_id               = data.aws_efs_file_system.selected.id
+  img                  = var.solr_img
+  name                 = "${local.service}-solr"
+  security_group_id    = data.aws_security_group.selected.id
+  service_discovery_id = data.aws_service_discovery_dns_namespace.solr.id
+  subnets              = data.aws_subnets.selected.ids
+  vpc_id               = data.aws_vpc.selected.id
+
+  # networking (tests Solr on ec2 with service discovery)
+  capacity_provider        = "EC2"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["EC2"]
+}
+
 module "archivesspace" {
   source = "../.."
 
@@ -51,6 +71,7 @@ module "archivesspace" {
   certbot_email      = "notifications@${var.domain}"
   certbot_enabled    = true
   cluster_id         = data.aws_ecs_cluster.selected.id
+  cpu                = null
   db_host            = var.db_host
   db_migrate         = true
   db_name            = "archivesspace"
@@ -58,12 +79,11 @@ module "archivesspace" {
   db_username_param  = var.db_username_param
   http_listener_arn  = data.aws_lb_listener.http.arn
   https_listener_arn = data.aws_lb_listener.https.arn
-  name               = "ex-service"
+  name               = local.service
   public_hostname    = "${local.name}-pui.${var.domain}"
   public_prefix      = "/"
   security_group_id  = data.aws_security_group.selected.id
-  solr_efs_id        = data.aws_efs_file_system.selected.id
-  solr_img           = var.solr_img
+  solr_url           = "http://${local.service}-solr.${var.solr_discovery_namespace}:8983/solr/archivesspace"
   staff_hostname     = "${local.name}-sui.${var.domain}"
   staff_prefix       = "/"
   subnets            = data.aws_subnets.selected.ids
@@ -93,6 +113,8 @@ module "archivesspace" {
     "SMTP_PASSWORD" = var.smtp_password_param
     "SMTP_USERNAME" = var.smtp_username_param
   }
+
+  depends_on = [module.solr]
 }
 
 ################################################################################
