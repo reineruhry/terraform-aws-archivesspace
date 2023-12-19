@@ -1,10 +1,7 @@
 locals {
-  api_ips_allowed          = join("; ", formatlist("allow %s", var.app_api_ips_allowed))
+  api_ips_allowed          = join("; ", formatlist("allow %s", var.api_ips_allowed))
   api_prefix               = local.staff_prefix != "/" ? "${local.staff_prefix}/api/" : "/api/"
-  app_efs_id               = var.app_efs_id
-  app_img                  = var.app_img
-  app_memory               = var.app_memory
-  app_pui_ips_allowed      = var.app_pui_ips_allowed
+  aspace_java_xmx          = var.aspace_java_xmx
   assign_public_ip         = var.assign_public_ip
   capacity_provider        = var.capacity_provider
   certbot_alb_name         = var.certbot_alb_name
@@ -25,15 +22,17 @@ locals {
   db_username              = data.aws_ssm_parameter.db_username.value
   db_username_param        = var.db_username_param
   db_url                   = "jdbc:mysql://${local.db_host}:3306/${local.db_name}?useUnicode=true&characterEncoding=UTF-8&user=${local.db_username}&password=${local.db_password}&useSSL=false&allowPublicKeyRetrieval=true"
+  efs_id                   = var.efs_id
   hostnames                = toset([local.public_hostname, local.staff_hostname])
   http_listener_arn        = var.http_listener_arn
   https_listener_arn       = var.https_listener_arn
+  img                      = var.img
   indexer_pui_state_volume = "${local.name}-indexer_pui_state"
   indexer_state_volume     = "${local.name}-indexer_state"
   initialize_plugins       = var.initialize_plugins
   instances                = var.instances
   java_opts                = var.java_opts
-  memory                   = var.task_memory
+  memory                   = var.memory
   name                     = var.name
   network_mode             = var.network_mode
   oai_prefix               = local.public_prefix != "/" ? "${local.public_prefix}oai" : "/oai"
@@ -44,9 +43,9 @@ locals {
   public_enabled           = var.public_enabled
   proxy_health_path        = local.db_migrate ? "/health" : "/status" # "/health" is a canned response, always returning http status 200
   public_hostname          = local.public_enabled ? var.public_hostname : local.staff_hostname
+  public_ips_allowed       = local.public_enabled ? join("; ", formatlist("allow %s", var.public_ips_allowed)) : "allow 127.0.0.1/32"
   public_prefix            = local.public_enabled ? var.public_prefix : "/disabled/"
   public_url               = "https://${local.public_hostname}${local.public_prefix}"
-  pui_ips_allowed          = local.public_enabled ? join("; ", formatlist("allow %s", local.app_pui_ips_allowed)) : "allow 127.0.0.1/32"
   real_ip_cidr             = "10.0.0.0/16" # TODO: var
   requires_compatibilities = var.requires_compatibilities
   security_group_id        = var.security_group_id
@@ -57,7 +56,6 @@ locals {
   subnets                  = var.subnets
   tags                     = var.tags
   target_type              = var.target_type
-  task_memory              = var.task_memory
   timezone                 = var.timezone
   upstream_host            = local.network_mode == "awsvpc" ? "localhost" : "app"
   vpc_id                   = var.vpc_id
@@ -65,8 +63,8 @@ locals {
   task_config = {
     api_ips_allowed     = local.api_ips_allowed
     api_prefix          = local.api_prefix
-    app_img             = local.app_img
-    app_memory          = local.app_memory
+    app_img             = local.img
+    app_memory          = local.aspace_java_xmx
     certbot_alb_name    = local.certbot_alb_name
     certbot_domains     = local.certbot_domains
     certbot_email       = local.certbot_email
@@ -96,7 +94,7 @@ locals {
     public_prefix       = local.public_prefix
     public_url          = local.public_url
     pui_indexer_enabled = local.public_enabled
-    pui_ips_allowed     = local.pui_ips_allowed
+    pui_ips_allowed     = local.public_ips_allowed
     real_ip_cidr        = local.real_ip_cidr
     region              = data.aws_region.current.name
     secret_key          = random_password.secret_key.result
