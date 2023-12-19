@@ -7,7 +7,7 @@ task definition:
 - MySQL cli for creating the database
 - Nginx proxy for routing to ArchivesSpace endpoints
 - ArchivesSpace with EFS for persistence (`/archivesspace/data`)
-- Solr with EFS for persistence (`/var/solr`)
+- (Optional module for) Solr with EFS for persistence (`/var/solr`)
 
 ## Usage
 
