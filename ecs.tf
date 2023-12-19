@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "this" {
     name = local.indexer_pui_state_volume
 
     efs_volume_configuration {
-      file_system_id     = local.app_efs_id
+      file_system_id     = local.efs_id
       transit_encryption = "ENABLED"
 
       authorization_config {
@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "this" {
     name = local.indexer_state_volume
 
     efs_volume_configuration {
-      file_system_id     = local.app_efs_id
+      file_system_id     = local.efs_id
       transit_encryption = "ENABLED"
 
       authorization_config {
@@ -82,7 +82,7 @@ resource "aws_ecs_service" "this" {
 }
 
 resource "aws_efs_access_point" "indexer_pui_state" {
-  file_system_id = local.app_efs_id
+  file_system_id = local.efs_id
 
   root_directory {
     path = "/${local.indexer_pui_state_volume}"
@@ -95,7 +95,7 @@ resource "aws_efs_access_point" "indexer_pui_state" {
 }
 
 resource "aws_efs_access_point" "indexer_state" {
-  file_system_id = local.app_efs_id
+  file_system_id = local.efs_id
 
   root_directory {
     path = "/${local.indexer_state_volume}"

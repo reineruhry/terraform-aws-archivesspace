@@ -65,8 +65,6 @@ module "solr" {
 module "archivesspace" {
   source = "../.."
 
-  app_efs_id         = data.aws_efs_file_system.selected.id
-  app_img            = var.archivesspace_img
   certbot_alb_name   = data.aws_lb.selected.name
   certbot_email      = "notifications@${var.domain}"
   certbot_enabled    = true
@@ -77,8 +75,10 @@ module "archivesspace" {
   db_name            = "archivesspace"
   db_password_param  = var.db_password_param
   db_username_param  = var.db_username_param
+  efs_id             = data.aws_efs_file_system.selected.id
   http_listener_arn  = data.aws_lb_listener.http.arn
   https_listener_arn = data.aws_lb_listener.https.arn
+  img                = var.archivesspace_img
   name               = local.service
   public_hostname    = "${local.name}-pui.${var.domain}"
   public_prefix      = "/"
@@ -97,8 +97,8 @@ module "archivesspace" {
   target_type              = "ip"
 
   # ip access
-  app_api_ips_allowed = ["0.0.0.0/0"] # Test with: 127.0.0.1/32
-  app_pui_ips_allowed = ["0.0.0.0/0"] # Test with: 127.0.0.1/32
+  api_ips_allowed    = ["0.0.0.0/0"] # Test with: 127.0.0.1/32
+  public_ips_allowed = ["0.0.0.0/0"] # Test with: 127.0.0.1/32
 
   # custom env & secrets
   custom_env_cfg = {

@@ -8,27 +8,14 @@ data "aws_ssm_parameter" "db_username" {
   name = var.db_username_param
 }
 
-variable "app_api_ips_allowed" {
+variable "api_ips_allowed" {
   default     = ["0.0.0.0/0"]
   description = "List of IP addresses (CIDR notation) allowed access to the API"
 }
 
-variable "app_efs_id" {
-  description = "EFS id for ArchivesSpace data directory"
-}
-
-variable "app_img" {
-  description = "ArchivesSpace img tag"
-}
-
-variable "app_memory" {
+variable "aspace_java_xmx" {
   default     = 2048
   description = "ArchivesSpace memory allocation"
-}
-
-variable "app_pui_ips_allowed" {
-  default     = ["0.0.0.0/0"]
-  description = "List of IP addresses (CIDR notation) allowed access to the PUI"
 }
 
 variable "assign_public_ip" {
@@ -91,12 +78,20 @@ variable "db_username_param" {
   description = "ArchivesSpace db username SSM parameter name"
 }
 
+variable "efs_id" {
+  description = "EFS id for ArchivesSpace data directory"
+}
+
 variable "http_listener_arn" {
   description = "ALB (http) listener arn"
 }
 
 variable "https_listener_arn" {
   description = "ALB (https) listener arn"
+}
+
+variable "img" {
+  description = "ArchivesSpace img tag"
 }
 
 variable "initialize_plugins" {
@@ -110,6 +105,11 @@ variable "instances" {
 
 variable "java_opts" {
   default = "-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xss512k -Djavax.accessibility.assistive_technologies=''"
+}
+
+variable "memory" {
+  default     = 3072
+  description = "Memory allocation for task (must be > aspace_java_xmx)"
 }
 
 variable "name" {
@@ -137,6 +137,11 @@ variable "public_enabled" {
 
 variable "public_hostname" {
   description = "Hostname for ArchivesSpace public interface"
+}
+
+variable "public_ips_allowed" {
+  default     = ["0.0.0.0/0"]
+  description = "List of IP addresses (CIDR notation) allowed access to the PUI"
 }
 
 variable "public_prefix" {
@@ -187,11 +192,6 @@ variable "tags" {
 
 variable "target_type" {
   default = "ip"
-}
-
-variable "task_memory" {
-  default     = 3072
-  description = "Memory allocation for task (must be >= app memory)"
 }
 
 variable "timezone" {
