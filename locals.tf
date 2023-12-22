@@ -54,6 +54,7 @@ locals {
   staff_prefix             = var.staff_prefix != "/" ? trimsuffix(var.staff_prefix, "/") : var.staff_prefix
   staff_url                = "https://${local.staff_hostname}${local.staff_prefix}"
   subnets                  = var.subnets
+  swap_size                = 2048
   tags                     = var.tags
   target_type              = var.target_type
   timezone                 = var.timezone
@@ -65,6 +66,8 @@ locals {
     api_prefix          = local.api_prefix
     app_img             = local.img
     app_memory          = local.aspace_java_xmx
+    app_memory_limit    = local.aspace_java_xmx + ((local.memory - local.aspace_java_xmx) / 2)
+    capacity_provider   = local.capacity_provider
     certbot_alb_name    = local.certbot_alb_name
     certbot_domains     = local.certbot_domains
     certbot_email       = local.certbot_email
@@ -102,6 +105,7 @@ locals {
     staff_hostname      = local.staff_hostname
     staff_prefix        = local.staff_prefix
     staff_url           = local.staff_url
+    swap_size           = local.swap_size
     timezone            = local.timezone
     upstream_host       = local.upstream_host
   }

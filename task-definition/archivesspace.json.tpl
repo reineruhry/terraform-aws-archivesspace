@@ -146,6 +146,9 @@
   {
     "name": "app",
     "image": "${app_img}",
+    %{ if capacity_provider == "EC2" }
+    "memory": ${app_memory_limit},
+    %{ endif ~}
     "networkMode": "${network_mode}",
     "essential": true,
     "environment": [
@@ -242,6 +245,12 @@
         "containerPath": "/archivesspace/data/indexer_state"
       }
     ],
+    %{ if capacity_provider == "EC2" }
+    "linuxParameters": {
+        "maxSwap": ${swap_size},
+        "swappiness": 60
+    },
+    %{ endif ~}
     "dependsOn": [
       {
         "containerName": "createdb",
