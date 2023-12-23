@@ -104,7 +104,7 @@ variable "instances" {
 }
 
 variable "java_opts" {
-  default = "-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xss512k -Djavax.accessibility.assistive_technologies=''"
+  default = "-XX:+PerfDisableSharedMem -Xss512k -Dfile.encoding=UTF-8 -Djava.awt.headless=true -Djavax.accessibility.assistive_technologies='' -server"
 }
 
 variable "memory" {
