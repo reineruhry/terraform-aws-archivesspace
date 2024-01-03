@@ -16,6 +16,7 @@ locals {
   custom_secrets_cfg       = var.custom_secrets_cfg
   db_host                  = var.db_host
   db_migrate               = local.instances != 1 ? false : var.db_migrate # it's not safe to run migrations with > 1 instances running
+  db_migrate_healthcheck   = var.db_migrate_healthcheck
   db_name                  = var.db_name
   db_password              = data.aws_ssm_parameter.db_password.value
   db_password_param        = var.db_password_param
@@ -41,7 +42,7 @@ locals {
   proxy_port               = 4000
   proxy_type               = local.public_hostname == local.staff_hostname ? "single" : "multi"
   public_enabled           = var.public_enabled
-  proxy_health_path        = local.db_migrate ? "/health" : "/status" # "/health" is a canned response, always returning http status 200
+  proxy_health_path        = local.db_migrate && !local.db_migrate_healthcheck ? "/health" : "/status" # "/health" is a canned response, always returning http status 200
   public_hostname          = local.public_enabled ? var.public_hostname : local.staff_hostname
   public_ips_allowed       = local.public_enabled ? join("; ", formatlist("allow %s", var.public_ips_allowed)) : "allow 127.0.0.1/32"
   public_prefix            = local.public_enabled ? var.public_prefix : "/disabled/"

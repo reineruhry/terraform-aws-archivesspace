@@ -66,6 +66,11 @@ variable "db_migrate" {
   description = "Run the ArchivesSpace database migration script on startup"
 }
 
+variable "db_migrate_healthcheck" {
+  default     = false
+  description = "Whether to enable healthchecks for the ArchivesSpace service when database migrations are enabled"
+}
+
 variable "db_name" {
   description = "ArchivesSpace db name"
 }
