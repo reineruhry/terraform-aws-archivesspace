@@ -1,6 +1,0 @@
-archivesspace_img  = "archivesspace/archivesspace:latest"
-certificate_domain = "*.archivesspace.org"
-domain             = "archivesspace.org"
-profile            = "default"
-profile_for_dns    = "default"
-solr_img           = "archivesspace/solr:latest"

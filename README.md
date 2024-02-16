@@ -7,13 +7,11 @@ task definition:
 - MySQL cli for creating the database
 - Nginx proxy for routing to ArchivesSpace endpoints
 - ArchivesSpace with EFS for persistence (`/archivesspace/data`)
-- (Optional module for) Solr with EFS for persistence (`/var/solr`)
 
 ## Usage
 
 See the examples for deployment options:
 
-- [complete: includes all necessary resources](./examples/complete/README.md)
 - [services: configures the module using references to pre-existing resources](./examples/services/README.md)
 
 ## Notable configuration details
@@ -83,7 +81,6 @@ cpu = null # don't set a cpu constraint
 
 ```hcl
 app_memory  = 2048 # specific allocation to the aspace container
-solr_memory = 1024 # specific allocation to the solr container
 task_memory = 3072 # allocation for task (all containers)
 ```
 

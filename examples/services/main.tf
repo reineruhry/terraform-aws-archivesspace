@@ -32,6 +32,12 @@ locals {
   region  = "us-west-2"
   service = "ex-service"
 
+  solr_args = [
+    "cp /opt/solr/server/solr/configsets/archivesspace/conf/* /var/solr/data/archivesspace/conf/;",
+    "rm -f /var/solr/data/archivesspace/data/index/write.lock;",
+    "/opt/docker-solr/scripts/solr-create -p 8983 -c archivesspace -d archivesspace"
+  ]
+
   tags = {
     Name       = local.name
     Example    = local.name
@@ -44,12 +50,17 @@ locals {
 ################################################################################
 
 module "solr" {
-  source = "../../modules/solr"
+  # use the DSpace Solr module (can be cfg-ed generically)
+  source = "github.com/dts-hosting/terraform-aws-dspace//modules/solr"
 
   cluster_id           = data.aws_ecs_cluster.selected.id
+  cmd_args             = local.solr_args
+  cmd_type             = "command" # vs. entrypoint
   cpu                  = null
   efs_id               = data.aws_efs_file_system.selected.id
+  efs_volume_suffix    = ""
   img                  = var.solr_img
+  log_prefix           = "archivesspace"
   name                 = "${local.service}-solr"
   security_group_id    = data.aws_security_group.selected.id
   service_discovery_id = data.aws_service_discovery_dns_namespace.solr.id
