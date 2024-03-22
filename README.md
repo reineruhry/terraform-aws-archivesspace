@@ -3,7 +3,6 @@
 Run ArchivesSpace as an ECS service using an all-inclusive
 task definition:
 
-- Nginx for http to https redirects and certbot (optional for SSL certs)
 - MySQL cli for creating the database
 - Nginx proxy for routing to ArchivesSpace endpoints
 - ArchivesSpace with EFS for persistence (`/archivesspace/data`)
@@ -59,12 +58,6 @@ target_type              = "ip"
 ```
 
 ### Listeners
-
-The module requires `http_listener_arn` for nginx to redirect http
-requests to https. The latter container includes certbot for (optionally)
-generating SSL certificates. The latter use case accounts for why
-the http redirection is happening within a container rather than as
-a listener rule.
 
 The `https_listener_arn` routes traffic to ArchivesSpace.
 

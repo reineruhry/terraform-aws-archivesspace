@@ -4,12 +4,6 @@ locals {
   aspace_java_xmx          = var.aspace_java_xmx
   assign_public_ip         = var.assign_public_ip
   capacity_provider        = var.capacity_provider
-  certbot_alb_name         = var.certbot_alb_name
-  certbot_domains          = join(",", tolist(local.hostnames))
-  certbot_email            = var.certbot_email
-  certbot_enabled          = var.certbot_enabled ? "true" : "false"
-  certbot_img              = "lyrasis/certbot-acm:latest" # TODO: var
-  certbot_port             = 80
   cluster_id               = var.cluster_id
   cpu                      = var.cpu
   custom_env_cfg           = var.custom_env_cfg
@@ -25,7 +19,6 @@ locals {
   db_url                   = "jdbc:mysql://${local.db_host}:3306/${local.db_name}?useUnicode=true&characterEncoding=UTF-8&user=${local.db_username}&password=${local.db_password}&useSSL=false&allowPublicKeyRetrieval=true"
   efs_id                   = var.efs_id
   hostnames                = toset([local.public_hostname, local.staff_hostname])
-  http_listener_arn        = var.http_listener_arn
   https_listener_arn       = var.https_listener_arn
   img                      = var.img
   indexer_pui_state_volume = "${local.name}-indexer_pui_state"
@@ -69,12 +62,6 @@ locals {
     app_memory          = local.aspace_java_xmx
     app_memory_limit    = local.aspace_java_xmx + ((local.memory - local.aspace_java_xmx) / 2)
     capacity_provider   = local.capacity_provider
-    certbot_alb_name    = local.certbot_alb_name
-    certbot_domains     = local.certbot_domains
-    certbot_email       = local.certbot_email
-    certbot_enabled     = local.certbot_enabled
-    certbot_img         = local.certbot_img
-    certbot_port        = local.certbot_port
     custom_env_cfg      = local.custom_env_cfg
     custom_secrets_cfg  = local.custom_secrets_cfg
     db_host             = local.db_host
@@ -113,15 +100,6 @@ locals {
 
   # setup routes for load balancer
   targets = {
-    certbot = {
-      container = "certbot"
-      arn       = local.http_listener_arn
-      hosts     = local.hostnames
-      health    = "/health"
-      paths     = ["*"]
-      port      = local.certbot_port
-      prefix    = "certs"
-    }
     proxy = {
       container = "proxy"
       arn       = local.https_listener_arn

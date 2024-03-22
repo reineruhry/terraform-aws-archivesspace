@@ -1,42 +1,5 @@
 [
   {
-    "name": "certbot",
-    "image": "${certbot_img}",
-    "networkMode": "${network_mode}",
-    "essential": true,
-    "environment": [
-      {
-        "name": "CERTBOT_ALB_NAME",
-        "value": "${certbot_alb_name}"
-      },
-      {
-        "name": "CERTBOT_DOMAINS",
-        "value": "${certbot_domains}"
-      },
-      {
-        "name": "CERTBOT_EMAIL",
-        "value": "${certbot_email}"
-      },
-      {
-        "name": "CERTBOT_ENABLED",
-        "value": "${certbot_enabled}"
-      }
-    ],
-    "portMappings": [
-      {
-        "containerPort": ${certbot_port}
-      }
-    ],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "${log_group}",
-        "awslogs-region": "${region}",
-        "awslogs-stream-prefix": "archivesspace"
-      }
-    }
-  },
-  {
     "name"  : "createdb",
     "image" : "mysql:8",
     "networkMode": "${network_mode}",
