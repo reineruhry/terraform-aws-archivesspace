@@ -88,16 +88,12 @@ module "solr" {
 module "archivesspace" {
   source = "../.."
 
-  certbot_alb_name   = local.name
-  certbot_email      = "notifications@${var.domain}"
-  certbot_enabled    = true
   cluster_id         = module.ecs.cluster_id
   db_host            = module.db.db_instance_address
   db_name            = "archivesspace"
   db_password_param  = aws_ssm_parameter.db_password.name
   db_username_param  = aws_ssm_parameter.db_username.name
   efs_id             = module.efs.id
-  http_listener_arn  = module.alb.http_tcp_listener_arns[0]
   https_listener_arn = module.alb.https_listener_arns[0]
   img                = var.archivesspace_img
   name               = local.service

@@ -76,9 +76,6 @@ module "solr" {
 module "archivesspace" {
   source = "../.."
 
-  certbot_alb_name   = data.aws_lb.selected.name
-  certbot_email      = "notifications@${var.domain}"
-  certbot_enabled    = true
   cluster_id         = data.aws_ecs_cluster.selected.id
   cpu                = null
   db_host            = var.db_host
@@ -87,7 +84,6 @@ module "archivesspace" {
   db_password_param  = var.db_password_param
   db_username_param  = var.db_username_param
   efs_id             = data.aws_efs_file_system.selected.id
-  http_listener_arn  = data.aws_lb_listener.http.arn
   https_listener_arn = data.aws_lb_listener.https.arn
   img                = var.archivesspace_img
   name               = local.service

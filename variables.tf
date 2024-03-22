@@ -26,18 +26,6 @@ variable "capacity_provider" {
   default = "FARGATE"
 }
 
-variable "certbot_alb_name" {
-  default = ""
-}
-
-variable "certbot_email" {
-  default = ""
-}
-
-variable "certbot_enabled" {
-  default = false
-}
-
 variable "cluster_id" {
   description = "ECS cluster id"
 }
@@ -85,10 +73,6 @@ variable "db_username_param" {
 
 variable "efs_id" {
   description = "EFS id for ArchivesSpace data directory"
-}
-
-variable "http_listener_arn" {
-  description = "ALB (http) listener arn"
 }
 
 variable "https_listener_arn" {
