@@ -129,7 +129,7 @@ module "archivesspace" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.5.2"
+  version = "5.7.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -154,7 +154,7 @@ module "vpc" {
 
 module "alb_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "5.1.1"
+  version = "5.1.2"
 
   name        = "${local.name}-alb"
   description = "ALB security group"
@@ -189,7 +189,7 @@ module "alb_sg" {
 
 module "archivesspace_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "5.1.1"
+  version = "5.1.2"
 
   name        = "${local.name}-archivesspace"
   description = "Complete ArchivesSpace example security group"
@@ -275,7 +275,7 @@ module "archivesspace_sg" {
 
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "9.7.0"
+  version = "9.8.0"
 
   name               = local.name
   load_balancer_type = "application"
@@ -318,7 +318,7 @@ module "alb" {
 
 module "efs" {
   source  = "terraform-aws-modules/efs/aws"
-  version = "1.6.0"
+  version = "1.6.2"
 
   # File system
   name      = local.name
@@ -383,7 +383,7 @@ module "efs" {
 
 module "ecs" {
   source  = "terraform-aws-modules/ecs/aws"
-  version = "5.9.1"
+  version = "5.10.1"
 
   cluster_name = local.name
 
@@ -406,7 +406,7 @@ module "ecs" {
 
 module "db" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "6.4.0"
+  version = "6.5.4"
 
   identifier = local.name
 
