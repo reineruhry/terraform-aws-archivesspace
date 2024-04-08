@@ -39,14 +39,14 @@ locals {
   public_hostname          = local.public_enabled ? var.public_hostname : local.staff_hostname
   public_ips_allowed       = local.public_enabled ? join("; ", formatlist("allow %s", var.public_ips_allowed)) : "allow 127.0.0.1/32"
   public_prefix            = local.public_enabled ? var.public_prefix : "/disabled/"
-  public_url               = "https://${local.public_hostname}${local.public_prefix}"
+  public_url               = trimsuffix("https://${local.public_hostname}${local.public_prefix}", "/")
   real_ip_cidr             = "10.0.0.0/16" # TODO: var
   requires_compatibilities = var.requires_compatibilities
   security_group_id        = var.security_group_id
   solr_url                 = var.solr_url
   staff_hostname           = var.staff_hostname
   staff_prefix             = var.staff_prefix != "/" ? trimsuffix(var.staff_prefix, "/") : var.staff_prefix
-  staff_url                = "https://${local.staff_hostname}${local.staff_prefix}"
+  staff_url                = trimsuffix("https://${local.staff_hostname}${local.staff_prefix}", "/")
   subnets                  = var.subnets
   swap_size                = 2048
   tags                     = var.tags
