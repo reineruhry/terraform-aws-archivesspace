@@ -60,7 +60,7 @@ locals {
     api_prefix          = local.api_prefix
     app_img             = local.img
     app_memory          = local.aspace_java_xmx
-    app_memory_limit    = local.aspace_java_xmx + ((local.memory - local.aspace_java_xmx) / 2)
+    app_memory_limit    = local.memory
     capacity_provider   = local.capacity_provider
     custom_env_cfg      = local.custom_env_cfg
     custom_secrets_cfg  = local.custom_secrets_cfg
