@@ -110,7 +110,7 @@
     "name": "app",
     "image": "${app_img}",
     %{ if capacity_provider == "EC2" }
-    "memory": ${app_memory_limit},
+    "memoryReservation": ${app_memory_limit},
     %{ endif ~}
     "networkMode": "${network_mode}",
     "essential": true,
