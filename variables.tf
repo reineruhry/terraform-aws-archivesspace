@@ -101,6 +101,11 @@ variable "memory" {
   description = "Memory allocation for task (must be > aspace_java_xmx)"
 }
 
+variable "mysql_img" {
+  default     = "mysql:8"
+  description = "The MYSQL image to use for the database setup"
+}
+
 variable "name" {
   description = "AWS ECS resources name/alias (service name, task definition name etc.)"
 }

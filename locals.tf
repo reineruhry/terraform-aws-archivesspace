@@ -27,6 +27,7 @@ locals {
   instances                = var.instances
   java_opts                = var.java_opts
   memory                   = var.memory
+  mysql_img                = var.mysql_img
   name                     = var.name
   network_mode             = var.network_mode
   oai_prefix               = local.public_prefix != "/" ? "${local.public_prefix}oai" : "/oai"
@@ -74,6 +75,7 @@ locals {
     initialize_plugins  = local.initialize_plugins
     java_opts           = local.java_opts
     log_group           = aws_cloudwatch_log_group.this.name
+    mysql_img           = local.mysql_img
     name                = local.name
     network_mode        = local.network_mode
     oai_prefix          = local.oai_prefix
