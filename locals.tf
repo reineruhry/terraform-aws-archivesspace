@@ -31,7 +31,7 @@ locals {
   network_mode             = var.network_mode
   oai_prefix               = local.public_prefix != "/" ? "${local.public_prefix}oai" : "/oai"
   placement_strategies     = var.placement_strategies
-  proxy_img                = "lyrasis/aspace-proxy:latest" # TODO: var
+  proxy_img                = var.proxy_img
   proxy_port               = 4000
   proxy_type               = local.public_hostname == local.staff_hostname ? "single" : "multi"
   public_enabled           = var.public_enabled

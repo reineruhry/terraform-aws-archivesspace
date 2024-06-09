@@ -118,6 +118,11 @@ variable "placement_strategies" {
   }
 }
 
+variable "proxy_img" {
+  description = "Proxy img tag"
+  default     = "lyrasis/aspace-proxy:latest"
+}
+
 variable "public_enabled" {
   type        = bool
   default     = true
