@@ -1,7 +1,7 @@
 [
   {
     "name"  : "createdb",
-    "image" : "mysql:8",
+    "image" : "${mysql_img}",
     "networkMode": "${network_mode}",
     "essential": false,
     "command" : [
