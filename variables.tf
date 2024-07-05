@@ -183,6 +183,11 @@ variable "subnets" {
   description = "Subnets"
 }
 
+variable "swap_size" {
+  default     = 2048
+  description = "Swap size"
+}
+
 variable "tags" {
   description = "Tags for the ArchivesSpace ECS service"
   default     = {}
