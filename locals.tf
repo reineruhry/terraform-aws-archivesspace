@@ -49,7 +49,7 @@ locals {
   staff_prefix             = var.staff_prefix != "/" ? trimsuffix(var.staff_prefix, "/") : var.staff_prefix
   staff_url                = trimsuffix("https://${local.staff_hostname}${local.staff_prefix}", "/")
   subnets                  = var.subnets
-  swap_size                = 2048
+  swap_size                = var.swap_size
   tags                     = var.tags
   target_type              = var.target_type
   timezone                 = var.timezone
