@@ -129,7 +129,7 @@ module "archivesspace" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.13.0"
+  version = "5.14.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -275,7 +275,7 @@ module "archivesspace_sg" {
 
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "9.11.0"
+  version = "9.12.0"
 
   name               = local.name
   load_balancer_type = "application"
@@ -318,7 +318,7 @@ module "alb" {
 
 module "efs" {
   source  = "terraform-aws-modules/efs/aws"
-  version = "1.6.3"
+  version = "1.6.4"
 
   # File system
   name      = local.name
@@ -406,7 +406,7 @@ module "ecs" {
 
 module "db" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "6.9.0"
+  version = "6.10.0"
 
   identifier = local.name
 
