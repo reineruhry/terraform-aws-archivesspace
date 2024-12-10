@@ -20,6 +20,7 @@ locals {
   efs_id                   = var.efs_id
   hostnames                = toset([local.public_hostname, local.staff_hostname])
   https_listener_arn       = var.https_listener_arn
+  iam_ecs_task_role_arn    = var.iam_ecs_task_role_arn
   img                      = var.img
   indexer_pui_state_volume = "${local.name}-indexer_pui_state"
   indexer_state_volume     = "${local.name}-indexer_state"

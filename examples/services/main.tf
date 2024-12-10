@@ -28,9 +28,10 @@ provider "aws" {
 }
 
 locals {
-  name    = "archivesspace-${basename(path.cwd)}"
-  region  = "us-west-2"
-  service = "ex-service"
+  name                   = "archivesspace-${basename(path.cwd)}"
+  region                 = "us-west-2"
+  service                = "ex-service"
+  iam_ecs_task_role_name = "aspace-dcsp-production-ECSTaskRole"
 
   solr_args = [
     "cp /opt/solr/server/solr/configsets/archivesspace/conf/* /var/solr/data/archivesspace/conf/;",
@@ -43,6 +44,10 @@ locals {
     Example    = local.name
     Repository = "https://github.com/dts-hosting/terraform-aws-archivesspace"
   }
+}
+
+data "aws_iam_role" "ecs_task_role" {
+  name = local.iam_ecs_task_role_name
 }
 
 ################################################################################
@@ -76,26 +81,27 @@ module "solr" {
 module "archivesspace" {
   source = "../.."
 
-  cluster_id         = data.aws_ecs_cluster.selected.id
-  cpu                = null
-  db_host            = var.db_host
-  db_migrate         = true
-  db_name            = "archivesspace"
-  db_password_param  = var.db_password_param
-  db_username_param  = var.db_username_param
-  efs_id             = data.aws_efs_file_system.selected.id
-  https_listener_arn = data.aws_lb_listener.https.arn
-  img                = var.archivesspace_img
-  name               = local.service
-  public_hostname    = "${local.name}-pui.${var.domain}"
-  public_prefix      = "/"
-  security_group_id  = data.aws_security_group.selected.id
-  solr_url           = "http://${local.service}-solr.${var.solr_discovery_namespace}:8983/solr/archivesspace"
-  staff_hostname     = "${local.name}-sui.${var.domain}"
-  staff_prefix       = "/"
-  subnets            = data.aws_subnets.selected.ids
-  timezone           = "America/New_York"
-  vpc_id             = data.aws_vpc.selected.id
+  cluster_id            = data.aws_ecs_cluster.selected.id
+  cpu                   = null
+  db_host               = var.db_host
+  db_migrate            = true
+  db_name               = "archivesspace"
+  db_password_param     = var.db_password_param
+  db_username_param     = var.db_username_param
+  efs_id                = data.aws_efs_file_system.selected.id
+  https_listener_arn    = data.aws_lb_listener.https.arn
+  iam_ecs_task_role_arn = data.aws_iam_role.ecs_task_role.arn
+  img                   = var.archivesspace_img
+  name                  = local.service
+  public_hostname       = "${local.name}-pui.${var.domain}"
+  public_prefix         = "/"
+  security_group_id     = data.aws_security_group.selected.id
+  solr_url              = "http://${local.service}-solr.${var.solr_discovery_namespace}:8983/solr/archivesspace"
+  staff_hostname        = "${local.name}-sui.${var.domain}"
+  staff_prefix          = "/"
+  subnets               = data.aws_subnets.selected.ids
+  timezone              = "America/New_York"
+  vpc_id                = data.aws_vpc.selected.id
 
   # networking (test with ec2/awsvpc)
   capacity_provider        = "EC2"

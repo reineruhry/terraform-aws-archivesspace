@@ -79,6 +79,10 @@ variable "https_listener_arn" {
   description = "ALB (https) listener arn"
 }
 
+variable "iam_ecs_task_role_arn" {
+  description = "ARN for ECS task role"
+}
+
 variable "img" {
   description = "ArchivesSpace img tag"
 }

@@ -44,13 +44,18 @@ data "aws_route53_zone" "selected" {
   name     = "${var.domain}."
 }
 
+data "aws_iam_role" "ecs_task_role" {
+  name = local.iam_ecs_task_role_name
+}
+
 locals {
   name    = "archivesspace-ex-${basename(path.cwd)}"
   region  = "us-west-2"
   service = "ex-complete"
 
-  vpc_cidr = "10.99.0.0/18"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  iam_ecs_task_role_arn = "aspace-dcsp-production-ECSTaskRole"
+  vpc_cidr              = "10.99.0.0/18"
+  azs                   = slice(data.aws_availability_zones.available.names, 0, 3)
 
   db_engine  = "mysql"
   db_version = "8.0"
@@ -88,23 +93,24 @@ module "solr" {
 module "archivesspace" {
   source = "../.."
 
-  cluster_id         = module.ecs.cluster_id
-  db_host            = module.db.db_instance_address
-  db_name            = "archivesspace"
-  db_password_param  = aws_ssm_parameter.db_password.name
-  db_username_param  = aws_ssm_parameter.db_username.name
-  efs_id             = module.efs.id
-  https_listener_arn = module.alb.https_listener_arns[0]
-  img                = var.archivesspace_img
-  name               = local.service
-  public_hostname    = "${local.name}.${var.domain}"
-  security_group_id  = module.archivesspace_sg.security_group_id
-  solr_url           = "http://${local.service}-solr.aspace.solr:8983/solr/archivesspace"
-  staff_hostname     = "${local.name}.${var.domain}"
-  staff_prefix       = "/staff/"
-  subnets            = module.vpc.private_subnets
-  timezone           = "America/New_York"
-  vpc_id             = module.vpc.vpc_id
+  cluster_id            = module.ecs.cluster_id
+  db_host               = module.db.db_instance_address
+  db_name               = "archivesspace"
+  db_password_param     = aws_ssm_parameter.db_password.name
+  db_username_param     = aws_ssm_parameter.db_username.name
+  efs_id                = module.efs.id
+  https_listener_arn    = module.alb.https_listener_arns[0]
+  iam_ecs_task_role_arn = data.aws_iam_role.ecs_task_role.arn
+  img                   = var.archivesspace_img
+  name                  = local.service
+  public_hostname       = "${local.name}.${var.domain}"
+  security_group_id     = module.archivesspace_sg.security_group_id
+  solr_url              = "http://${local.service}-solr.aspace.solr:8983/solr/archivesspace"
+  staff_hostname        = "${local.name}.${var.domain}"
+  staff_prefix          = "/staff/"
+  subnets               = module.vpc.private_subnets
+  timezone              = "America/New_York"
+  vpc_id                = module.vpc.vpc_id
 
   # custom env & secrets
   custom_env_cfg = {
