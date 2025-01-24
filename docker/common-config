@@ -48,8 +48,10 @@ tcp_nodelay on;
 location /health {
   default_type text/html;
   return 200 "<!DOCTYPE html><h1>Not too bad!</h1>\n";
+  access_log off;
 }
 
 location /status {
   proxy_pass http://app_api/schemas/repository;
+  access_log off;
 }
