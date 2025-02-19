@@ -21,3 +21,13 @@ UPSTREAM_HOST=app docker compose up
 ```bash
 ./build_and_push.sh
 ```
+
+To also push to ECR install the [ecr credentials helper](https://github.com/awslabs/amazon-ecr-credential-helper?tab=readme-ov-file#installing).
+
+Then set these envvars:
+
+```
+export AWS_PROFILE=archivesspace # set the profile name
+export ASPACE_PROXY_ECR_IMG=513816696638.dkr.ecr.us-west-2.amazonaws.com/archivesspace:proxy # set img
+./build_and_push.sh
+```
