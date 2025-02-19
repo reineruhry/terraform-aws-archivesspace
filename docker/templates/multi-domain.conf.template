@@ -1,4 +1,4 @@
-limit_req_zone $binary_remote_addr zone=waypoints_limit:16m rate=20r/s;
+limit_req_zone $binary_remote_addr zone=waypoints_limit:16m rate=25r/s;
 
 upstream app_api {
   server ${UPSTREAM_HOST}:8089;
@@ -34,7 +34,7 @@ server {
   }
 
   location ~ ^/repositories/\d+/resources/\d+/infinite/waypoints {
-    limit_req zone=waypoints_limit burst=10 nodelay;
+    limit_req zone=waypoints_limit burst=75 delay=75;
     proxy_pass http://app_public;
   }
 
