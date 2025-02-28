@@ -1,4 +1,4 @@
-limit_req_zone $binary_remote_addr zone=waypoints_limit:16m rate=25r/s;
+limit_req_zone $binary_remote_addr zone=waypoints_limit:16m rate=23r/s;
 
 upstream app_api {
   server ${UPSTREAM_HOST}:8089;
