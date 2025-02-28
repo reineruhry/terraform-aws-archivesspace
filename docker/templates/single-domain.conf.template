@@ -34,7 +34,7 @@ server {
   }
 
   location ~ ^/repositories/\d+/resources/\d+/infinite/waypoints {
-    limit_req zone=waypoints_limit burst=75 delay=75;
+    limit_req zone=waypoints_limit burst=100 delay=100;
     proxy_pass http://app_public;
   }
 
