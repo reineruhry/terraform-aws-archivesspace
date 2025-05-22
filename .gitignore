@@ -4,3 +4,4 @@
 .terraform.*lock*
 terraform.tf*
 !terraform.tfvars.example
+!examples/arclight/terraform.tfvars
