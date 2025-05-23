@@ -3,7 +3,7 @@ terraform {
     organization = "Lyrasis"
 
     workspaces {
-      name = "arclight-module-services-test"
+      name = "arclight"
     }
   }
 }
